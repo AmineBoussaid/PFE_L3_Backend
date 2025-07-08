@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ReclamationDto {
-	private String sujet;
-	private String contenue;
+	
+	private String nomClient;
+	
+	private String telephone;
 }

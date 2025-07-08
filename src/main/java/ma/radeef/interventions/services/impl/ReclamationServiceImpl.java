@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ma.radeef.interventions.dao.ReclamationRepository;
+import ma.radeef.interventions.endpoints.dtos.ReclamationStatusCount;
 import ma.radeef.interventions.models.Reclamation;
 import ma.radeef.interventions.services.ReclamationService;
 import ma.radeef.interventions.services.utils.IdFonctionnelCalculator;
@@ -21,6 +22,9 @@ public class ReclamationServiceImpl implements ReclamationService {
 		if(reclamation.getIdFonctionnel() == null) {
 			var random = IdFonctionnelCalculator.create();
 			reclamation.setIdFonctionnel(random);
+		}
+		if(reclamation.getStatus() == null) {
+			reclamation.setStatus("En attente");
 		}
 		reclamationRepository.save(reclamation);
 	}
@@ -40,6 +44,22 @@ public class ReclamationServiceImpl implements ReclamationService {
 	public List<Reclamation> getAll() {
 		return reclamationRepository.findAll();
 	}
+
+	@Override
+	public List<ReclamationStatusCount> countReclamationsByStatus() {
+		// TODO Auto-generated method stub
+		return reclamationRepository.countReclamationsByStatus();
+	}
+
+	@Override
+	public List<Reclamation> getByNomClient(String nomClient) {
+		// TODO Auto-generated method stub
+		return reclamationRepository.findByNomClient(nomClient);
+	}
+
+
+
+
 
 	
 }

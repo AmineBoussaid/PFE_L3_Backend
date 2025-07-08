@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UtilisateurDto {
-	private int id;
-	private String nom;
-	private String prenom;
-	private String login;
-	private String password;
+public class ReclamationStatusCount {
+	
+	private String status;
+	private Long count;
+
 }

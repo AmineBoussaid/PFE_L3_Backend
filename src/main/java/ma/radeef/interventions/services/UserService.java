@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import ma.radeef.interventions.models.Utilisateur;
+import ma.radeef.interventions.models.User;
 
 @Service
-public interface UtilisateurService {
+public interface UserService {
+	
+	void save(User user);
+	
+	List<User> getAll();
 
-	List<Utilisateur> getAll();	
 }
