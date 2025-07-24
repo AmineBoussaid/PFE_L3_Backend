@@ -11,8 +11,12 @@ public interface ServiceDService {
 	
 	void save(ServiceD serviceD);
 	
-	ServiceD getById(Long id);
-    
     List<ServiceD> getAll();
+	
+	ServiceD getById(Long id);
+	
+	List<ServiceD> getByDepartementId(Long departementId);
+    
+    Long getByChefServiceId(Long chefServiceId);
 
 }

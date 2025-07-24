@@ -28,8 +28,6 @@ public class InterventionServiceImpl implements InterventionService{
         /*StatusModification.updateReclamationStatus(intervention);*/
         InterventionHist interventionHist = interventionDtoMapper.toDto(intervention);
         interventionHistRepository.save(interventionHist);
-
-
     }
 
 	@Override
@@ -37,11 +35,38 @@ public class InterventionServiceImpl implements InterventionService{
 		// TODO Auto-generated method stub
 		return interventionRepository.findById(id).orElse(null);
 	}
-
+	
 	@Override
 	public List<Intervention> getAll() {
 		// TODO Auto-generated method stub
 		return interventionRepository.findAll();
 	}
+
+	@Override
+	public List<Intervention> getByServiceId(Long serviceId) {
+		// TODO Auto-generated method stub
+		return interventionRepository.findByServiceId(serviceId);
+	}
+	
+	@Override
+	public List<Intervention> getByDepartementId(Long departementId) {
+		// TODO Auto-generated method stub
+		return interventionRepository.findByDepartementId(departementId);
+	}
+
+
+	
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+        if (interventionRepository.existsById(id)) {
+        	interventionRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
 }

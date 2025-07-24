@@ -28,4 +28,10 @@ public class DepartementServiceImpl implements DepartementService{
 		return departementRepository.findAll();
 	}
 
+	@Override
+	public Long getByChefDepartement(Long chefDepartementId) {
+		// TODO Auto-generated method stub
+		return departementRepository.findByChefDepartementId(chefDepartementId) ;
+	}
+
 }

@@ -27,6 +27,14 @@ public class ServiceServiceImpl implements ServiceDService {
 		// TODO Auto-generated method stub
 		return serviceRepository.findById(id).orElse(null);
 	}
+	
+	
+	@Override
+	public List<ServiceD> getByDepartementId(Long departementId) {
+		// TODO Auto-generated method stub
+		return serviceRepository.findByDepartementId(departementId);
+	}
+	
 
 	
 	@Override
@@ -34,6 +42,13 @@ public class ServiceServiceImpl implements ServiceDService {
 		// TODO Auto-generated method stub
         return (List<ServiceD>) serviceRepository.findAll();
 	}
-	
+
+	@Override
+	public Long getByChefServiceId(Long chefServiceId) {
+		// TODO Auto-generated method stub
+		return serviceRepository.findByChefServiceId(chefServiceId);
+	}
+
+
 
 }

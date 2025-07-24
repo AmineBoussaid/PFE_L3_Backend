@@ -12,45 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.models.Intervention;
-import ma.radeef.interventions.services.InterventionService;
+import ma.radeef.interventions.models.TechnicienSer;
+import ma.radeef.interventions.services.TechnicienSerService;
 
 @RestController
-@RequestMapping("/api/interventions")
+@RequestMapping("/api/technicien-services")
 @RequiredArgsConstructor
-public class InterventionEndpoint {
+public class TechnicienSerEndpoint {
 	
-	private final InterventionService interventionService;
+	private final TechnicienSerService technicienSerService;
 	
 	@PostMapping("/add")
-	public void add(@RequestBody Intervention intervention) {
-		interventionService.save(intervention);
+	public void add(@RequestBody TechnicienSer technicienService) {
+		technicienSerService.save(technicienService);
 	}
 	
 	@GetMapping("/getAll")
-	public List<Intervention> getAll(){
-		return interventionService.getAll();
-	}
-	
-	@GetMapping("/getByServiceId/{serviceId}")
-	public List<Intervention> getByServiceId(@PathVariable Long serviceId){
-		return interventionService.getByServiceId(serviceId);
+	public List<TechnicienSer> getAll(){
+		return technicienSerService.getAll();
 		
-	}
-	
-	@GetMapping("/getByDepartementId/{departementId}")
-	public List<Intervention> getByDepartementId(@PathVariable Long departementId){
-		return interventionService.getByDepartementId(departementId);
 	}
 	
 	@DeleteMapping("deleteById/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        boolean isDeleted = interventionService.deleteById(id);
+        boolean isDeleted = technicienSerService.deleteById(id);
         if (isDeleted) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

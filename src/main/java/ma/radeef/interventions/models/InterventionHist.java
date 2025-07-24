@@ -1,5 +1,7 @@
 package ma.radeef.interventions.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +33,13 @@ public class InterventionHist{
 	@Column
 	private String status;
 	
+	@Column
+	private LocalDateTime dateDebut;
+	
+	@Column
+	private LocalDateTime dateFin;
+	
+	
 	@Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private String created_at;
 	
@@ -48,6 +57,14 @@ public class InterventionHist{
 	@ManyToOne
 	@JoinColumn(name = "departement_id")
 	private Departement departement;
+	
+	@ManyToOne
+    @JoinColumn(name = "service_id")
+    private ServiceD service;
+	
+	@ManyToOne
+    @JoinColumn(name = "technicien_id")
+    private User technicien;
 	
 	@ManyToOne
     @JoinColumn(name = "change_par")

@@ -28,13 +28,37 @@ public class Reclamation {
 	private String nomClient;
 	
 	@Column
+	private String codeAbonnement;
+	
+	@Column
+	private String pays;
+	
+	@Column
+	private String ville;
+	
+	@Column
+	private String quartier;
+	
+	@Column
+	private String nomRue;
+	
+	@Column
+	private String category;
+	
+	@Column
+	private String situation;
+	
+	@Column
+	private String periode;
+	
+	@Column
+	private String occurrence;
+	
+	@Column
 	private String telephone;
 	
 	@Column
 	private String email;
-	
-	@Column
-	private String category ;
 	
 	@Column
 	private String status ;
@@ -50,8 +74,8 @@ public class Reclamation {
     private User agent;
     
     @ManyToOne
-    @JoinColumn(name = "departement_id")
-    private Departement departement;
+    @JoinColumn(name = "service_id")
+    private ServiceD service;
 	
     
 

@@ -20,19 +20,33 @@ public class ServiceEndpoint {
 	
     private final ServiceDService serviceDService;
     
-    @PostMapping
+	@PostMapping("/add")
     public void add(@RequestBody ServiceD serviceD) {
         serviceDService.save(serviceD);
     }
 
-    @GetMapping
+
+	@GetMapping("/getAll")
     public List<ServiceD> getAll() {
         return serviceDService.getAll();
     }
-
+    
     @GetMapping("/getById/{id}")
     public ServiceD getById(@PathVariable Long id) {
         return serviceDService.getById(id);
     }
+    
+    @GetMapping("/getByDepartementId/{departementId}")
+    public List<ServiceD> getByDepartementId(@PathVariable Long departementId) {
+        return serviceDService.getByDepartementId(departementId);
+    }
+
+    
+    @GetMapping("/getByChefService/{chefServiceId}")
+    public Long getByChefService(@PathVariable Long chefServiceId ) {
+        return serviceDService.getByChefServiceId(chefServiceId);
+    }
+    
+
 
 }

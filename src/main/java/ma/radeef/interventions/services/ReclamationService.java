@@ -13,6 +13,14 @@ public interface ReclamationService {
 	/* sauvegarder */
 	void save(Reclamation reclamation);
 	
+	Reclamation updateReclamation(Reclamation reclamation);
+	
+    /* delete par id */
+    public boolean deleteById(Long id);
+	
+	/* lister tous les Reclamation*/
+	List<Reclamation> getAll();
+	
 	/* lister par Id*/
 	Reclamation getById(Long id);
 	
@@ -22,11 +30,23 @@ public interface ReclamationService {
 	/* lister par nomClient*/
 	List<Reclamation> getByNomClient(String nomClient);
 	
-	/* lister tous les Reclamation*/
-	List<Reclamation> getAll();
+	/* lister par AgentId*/
+	List<Reclamation> getByAgentId(Long agentId);
+	
+	/* lister par ServiceId*/
+	List<Reclamation> getByServiceId(Long serviceId);
+	
+	/* lister par DepartementId*/
+	List<Reclamation> getByDepartementId(Long departementId);
 	
 	/* count status */
     List<ReclamationStatusCount> countReclamationsByStatus();
+    
+    
+
+
+    
+    
 
 	
 }

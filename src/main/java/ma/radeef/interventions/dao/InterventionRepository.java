@@ -12,5 +12,7 @@ public interface InterventionRepository extends CrudRepository<Intervention, Lon
 	
 	List<Intervention> findAll();
 	
+	List<Intervention> findByServiceId(Long serviceId);
 	
+	List<Intervention> findByDepartementId(Long departementId);
 }

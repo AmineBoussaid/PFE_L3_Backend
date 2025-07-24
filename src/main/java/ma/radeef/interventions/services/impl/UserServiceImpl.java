@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ma.radeef.interventions.dao.UserRepository;
+import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
 import ma.radeef.interventions.models.User;
 import ma.radeef.interventions.services.UserService;
 
@@ -21,11 +22,17 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 	
-
 	@Override
 	public List<User> getAll() {
 		// TODO Auto-generated method stub
 		return userRepository.findAll();
 	}
+
+	@Override
+    public List<TechnicienDto> getTechniciensByServiceId(Long serviceId) {
+        return userRepository.findTechniciensByServiceId(serviceId);
+    }
+	
+	
 
 }

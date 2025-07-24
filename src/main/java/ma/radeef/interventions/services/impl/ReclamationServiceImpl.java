@@ -28,6 +28,21 @@ public class ReclamationServiceImpl implements ReclamationService {
 		}
 		reclamationRepository.save(reclamation);
 	}
+	
+	@Override
+	public Reclamation updateReclamation(Reclamation reclamation) {
+        return reclamationRepository.save(reclamation);
+    }
+	
+	@Override
+	public boolean deleteById(Long id) {
+		if (reclamationRepository.existsById(id)) {
+			reclamationRepository.deleteById(id);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public Reclamation getById(Long id) {
@@ -57,9 +72,23 @@ public class ReclamationServiceImpl implements ReclamationService {
 		return reclamationRepository.findByNomClient(nomClient);
 	}
 
-
-
-
-
+	@Override
+	public List<Reclamation> getByAgentId(Long agentId) {
+		// TODO Auto-generated method stub
+		return reclamationRepository.findByAgentId(agentId);
+	}
 	
+	@Override
+	public List<Reclamation> getByServiceId(Long serviceId) {
+		// TODO Auto-generated method stub
+		return reclamationRepository.findByServiceId(serviceId);
+	}
+
+	@Override
+	public List<Reclamation> getByDepartementId(Long departementId) {
+		// TODO Auto-generated method stub
+		return reclamationRepository.findByDepartementId(departementId);
+	}
+
+
 }

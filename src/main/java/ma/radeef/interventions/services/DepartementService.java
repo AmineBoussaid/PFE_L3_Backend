@@ -12,6 +12,7 @@ public interface DepartementService {
 	void save(Departement departement);
 	
 	List<Departement> getAll();
-
+	
+	Long getByChefDepartement(Long chefDepartementId);
 
 }

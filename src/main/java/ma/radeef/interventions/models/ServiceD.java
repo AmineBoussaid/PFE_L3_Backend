@@ -1,6 +1,7 @@
 package ma.radeef.interventions.models;
 
-import java.util.HashSet;
+
+
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -9,8 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,5 +36,8 @@ public class ServiceD {
     @ManyToOne
     @JoinColumn(name = "chef_service_id")
     private User chefService;
+    
+    @OneToMany(mappedBy = "service")
+    private Set<TechnicienSer> technicienServices;
     
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.models.Intervention;
 import ma.radeef.interventions.models.InterventionHist;
 import ma.radeef.interventions.services.InterventionHistService;
 

@@ -14,6 +14,15 @@ public interface InterventionService {
 	Intervention getById(Long id);
 	
 	List<Intervention> getAll();
+	
+	/* lister par ServiceId*/
+	List<Intervention> getByServiceId(Long serviceId);
+	
+	/* lister par ServiceId*/
+	List<Intervention> getByDepartementId(Long departementId);
+	
+    /* delete par id */
+    public boolean deleteById(Long id);
 
 
 }
