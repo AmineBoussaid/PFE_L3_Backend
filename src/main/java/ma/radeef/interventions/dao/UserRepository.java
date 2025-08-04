@@ -14,6 +14,8 @@ import ma.radeef.interventions.models.User;
 public interface UserRepository extends CrudRepository<User, Long> {
 	
 	List<User> findAll();
+	
+    User findByEmail(String email);
 
     @Query("SELECT new ma.radeef.interventions.endpoints.dtos.TechnicienDto(u.id, u.username, u.email, u.role, s.id, s.nom) " +
             "FROM User u " +
@@ -21,4 +23,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
             "JOIN ts.service s " +
             "WHERE u.role = 'technicien' AND s.id = :serviceId")
      List<TechnicienDto> findTechniciensByServiceId(@Param("serviceId") Long serviceId);
+        
 }

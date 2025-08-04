@@ -1,5 +1,6 @@
 package ma.radeef.interventions.endpoints;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ma.radeef.interventions.endpoints.dtos.ReclamationStatusCount;
 import ma.radeef.interventions.models.Reclamation;
 import ma.radeef.interventions.services.ReclamationService;
+import ma.radeef.interventions.services.UserHistService;
+import ma.radeef.interventions.services.utils.GestionHistorique;
 
 @RestController
 @RequestMapping("/api/reclamations")
@@ -26,20 +30,20 @@ public class ReclamationEndpoint {
 	/*private final ReclamationDtoMapper reclamationDtoMapper;*/
 
 	
-	@PostMapping("/add")
-	public void add(@RequestBody Reclamation reclamation) {
-		reclamationService.save(reclamation);
+	@PostMapping("/add/{userId}")
+	public void add(@RequestBody Reclamation reclamation,@PathVariable("userId") Long userId, HttpServletRequest request) {
+		reclamationService.save(reclamation, userId, request);
 	}
 	
 	
-    @PutMapping("/update")
-    public Reclamation updateReclamation(@RequestBody Reclamation reclamation) {
-        return reclamationService.updateReclamation(reclamation);
+    @PutMapping("/update/{userId}")
+    public Reclamation updateReclamation(@RequestBody Reclamation reclamation, @PathVariable("userId") Long userId, HttpServletRequest request) {
+        return reclamationService.updateReclamation(reclamation,userId, request);
     }
     
-    @DeleteMapping("deleteById/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        boolean isDeleted = reclamationService.deleteById(id);
+    @DeleteMapping("/deleteById/{id}/{userId}")
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id, @PathVariable("userId") Long userId,HttpServletRequest request) {
+        boolean isDeleted = reclamationService.deleteById(id,userId,request);
         if (isDeleted) {
             return ResponseEntity.noContent().build();
         } else {
@@ -89,9 +93,6 @@ public class ReclamationEndpoint {
 	public List<Reclamation> getByDepartementId(@PathVariable Long departementId) {
 		return reclamationService.getByDepartementId(departementId);
 	}
-
-	
-	
 	
     @GetMapping("/status")
     public List<ReclamationStatusCount> countReclamationsByStatus() {

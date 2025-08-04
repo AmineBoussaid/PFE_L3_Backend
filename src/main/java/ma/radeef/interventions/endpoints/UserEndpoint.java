@@ -2,6 +2,8 @@ package ma.radeef.interventions.endpoints;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +33,23 @@ public class UserEndpoint {
 		return userService.getAll();
 	}
 	
+	@GetMapping("/getById/{id}")
+	public User getById(@PathVariable Long id){
+		return userService.getById(id);
+	}
+	
 	@GetMapping("/getTechniciensByServiceId/{serviceId}")
     public List<TechnicienDto> getTechniciensByServiceId(@PathVariable Long serviceId) {
         return userService.getTechniciensByServiceId(serviceId);
     }
+	
+	@GetMapping("/getByEmail/{email}/{password}")
+	public ResponseEntity<User> getByEmail(@PathVariable String email, @PathVariable String password) {
+	    User user = userService.getByEmail(email, password);
+	    if (user != null) {
+	        return ResponseEntity.ok(user);
+	    }
+	    return ResponseEntity.notFound().build(); // Retourne un statut 401 si non autorisé
+	}
 
 }

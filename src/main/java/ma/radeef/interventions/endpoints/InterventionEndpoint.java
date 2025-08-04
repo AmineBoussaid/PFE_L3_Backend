@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ma.radeef.interventions.models.Intervention;
+import ma.radeef.interventions.models.Reclamation;
 import ma.radeef.interventions.services.InterventionService;
 
 @RestController
@@ -22,14 +25,34 @@ public class InterventionEndpoint {
 	
 	private final InterventionService interventionService;
 	
-	@PostMapping("/add")
-	public void add(@RequestBody Intervention intervention) {
-		interventionService.save(intervention);
+	@PostMapping("/add/{userId}")
+	public void add(@RequestBody Intervention intervention,@PathVariable("userId") Long userId, HttpServletRequest request) {
+		interventionService.save(intervention,userId,request);
 	}
+	
+	@DeleteMapping("deleteById/{id}/{userId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id, @PathVariable("userId") Long userId,HttpServletRequest request) {
+        boolean isDeleted = interventionService.deleteById(id,userId,request);
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+	
+    @PutMapping("/update/{userId}")
+    public Intervention updateIntervention(@RequestBody Intervention newIntervention,@PathVariable("userId") Long userId, HttpServletRequest request) {
+        return interventionService.updateIntervention(newIntervention,userId, request);
+    }
 	
 	@GetMapping("/getAll")
 	public List<Intervention> getAll(){
 		return interventionService.getAll();
+	}
+	
+	@GetMapping("/getById/{id}")
+	public Intervention getById(@PathVariable Long id){
+		return interventionService.getById(id);
 	}
 	
 	@GetMapping("/getByServiceId/{serviceId}")
@@ -43,14 +66,20 @@ public class InterventionEndpoint {
 		return interventionService.getByDepartementId(departementId);
 	}
 	
-	@DeleteMapping("deleteById/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        boolean isDeleted = interventionService.deleteById(id);
-        if (isDeleted) {
-            return ResponseEntity.noContent().build();
+	@GetMapping("/getByTechnicienId/{technicienId}")
+	public List<Intervention> getByTechnicienId(@PathVariable Long technicienId){
+		return interventionService.getByTechnicienId(technicienId);
+	}
+	
+	@GetMapping("/getByIdFonctionnel/{idFonctionnel}")
+	public ResponseEntity<Intervention> getByIdFonctionnel(@PathVariable String idFonctionnel) {
+		Intervention intervention = interventionService.getByReclamationIdFonctionnel(idFonctionnel);
+        if (intervention != null) {
+            return ResponseEntity.ok(intervention);
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+	}
+
 
 }

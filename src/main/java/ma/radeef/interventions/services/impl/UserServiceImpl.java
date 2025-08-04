@@ -22,17 +22,38 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 	
+    @Override
+    public List<User> getAll() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            user.setPassword(null); // Efface le mot de passe pour chaque utilisateur
+        }
+        return users;
+    }
+	
+    @Override
+    public User getById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setPassword(null); // Assurez-vous que la classe User a un setter pour le mot de passe
+        }
+        return user;
+    }
+    
 	@Override
-	public List<User> getAll() {
-		// TODO Auto-generated method stub
-		return userRepository.findAll();
+	public User getByEmail(String email, String password) {
+	    User user = userRepository.findByEmail(email);
+	    if (user != null && user.getPassword().equals(password)) {
+            user.setPassword(null); // Assurez-vous que la classe User a un setter pour le mot de passe
+	        return user;
+	    }
+	    return null; // Retourne null si l'utilisateur n'est pas trouvé ou si le mot de passe est incorrect
 	}
 
 	@Override
     public List<TechnicienDto> getTechniciensByServiceId(Long serviceId) {
         return userRepository.findTechniciensByServiceId(serviceId);
     }
-	
 	
 
 }

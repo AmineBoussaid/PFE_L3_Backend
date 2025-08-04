@@ -12,13 +12,15 @@ import ma.radeef.interventions.models.Reclamation;
 @RequiredArgsConstructor
 public class StatusModification {
 	
-    private static ReclamationRepository reclamationRepository;
+	private final ReclamationRepository reclamationRepository;
 
-    public static void updateReclamationStatus(Intervention intervention) {
+    public void updateReclamationStatus(Intervention intervention) {
         if (intervention.getReclamation() != null) {
             Reclamation reclamation = intervention.getReclamation();
             reclamation.setStatus(intervention.getStatus());
             reclamationRepository.save(reclamation);
+        } else {
+            System.err.println("Reclamation is null in the intervention.");
         }
     }
 

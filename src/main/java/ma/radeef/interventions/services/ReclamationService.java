@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import ma.radeef.interventions.endpoints.dtos.ReclamationStatusCount;
 import ma.radeef.interventions.models.Reclamation;
 
@@ -11,12 +12,12 @@ import ma.radeef.interventions.models.Reclamation;
 public interface ReclamationService {
 	
 	/* sauvegarder */
-	void save(Reclamation reclamation);
+	void save(Reclamation reclamation,Long userId, HttpServletRequest request);
 	
-	Reclamation updateReclamation(Reclamation reclamation);
+	Reclamation updateReclamation(Reclamation reclamation, Long userId, HttpServletRequest request);
 	
     /* delete par id */
-    public boolean deleteById(Long id);
+    public boolean deleteById(Long id,Long userId, HttpServletRequest request);
 	
 	/* lister tous les Reclamation*/
 	List<Reclamation> getAll();

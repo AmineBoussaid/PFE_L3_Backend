@@ -14,6 +14,10 @@ public interface UserService {
 	
 	List<User> getAll();
 	
+	User getById(Long id);
+	
+	User getByEmail(String email,String password);
+	
 	List<TechnicienDto>getTechniciensByServiceId(Long serviceId);
 
 }
