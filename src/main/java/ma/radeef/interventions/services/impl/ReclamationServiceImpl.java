@@ -6,50 +6,61 @@ import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import ma.radeef.interventions.dao.ClientRepository;
 import ma.radeef.interventions.dao.ReclamationRepository;
-import ma.radeef.interventions.endpoints.dtos.ReclamationStatusCount;
+import ma.radeef.interventions.models.Client;
 import ma.radeef.interventions.models.Reclamation;
+import ma.radeef.interventions.models.ReclamationStatut;
 import ma.radeef.interventions.services.ReclamationService;
 import ma.radeef.interventions.services.UserHistService;
+import ma.radeef.interventions.services.utils.CopieAdresse;
 import ma.radeef.interventions.services.utils.GestionHistorique;
 import ma.radeef.interventions.services.utils.IdFonctionnelCalculator;
 
 @Service
 @RequiredArgsConstructor
 public class ReclamationServiceImpl implements ReclamationService {
-	
+
 	private final ReclamationRepository reclamationRepository;
-	
+
 	private final UserHistService userHistService;
+	private final ClientRepository clientRepository;
 
 	@Override
 	public void save(Reclamation reclamation, Long userId, HttpServletRequest request) {
-		if(reclamation.getIdFonctionnel() == null) {
+
+		if (reclamation.getCodeAbonnement() != null) {
+			Client client = clientRepository.findByCodeAbonnement(reclamation.getCodeAbonnement());
+			reclamation = CopieAdresse.copie(client, reclamation);
+		}
+
+		if (reclamation.getIdFonctionnel() == null) {
 			var random = IdFonctionnelCalculator.create();
 			reclamation.setIdFonctionnel(random);
 		}
-		if(reclamation.getStatus() == null) {
+
+		if (reclamation.getStatus() == null) {
 			reclamation.setStatus("En attente");
-		}		
-		
+		}
+
 		GestionHistorique.createReclamation(userHistService, reclamation, userId, request);
 		reclamationRepository.save(reclamation);
 	}
-	
+
 	@Override
-	public Reclamation updateReclamation(Reclamation newReclamation, Long userId, HttpServletRequest request) {        
-        Reclamation oldReclamation = reclamationRepository.findById(newReclamation.getId()).orElse(null);
-        GestionHistorique.updateReclamation(userHistService, oldReclamation, newReclamation, userId,request);
-        
-        return reclamationRepository.save(newReclamation);
-    }
-	
+	public Reclamation updateReclamation(Reclamation newReclamation, Long userId, HttpServletRequest request) {
+		Reclamation oldReclamation = reclamationRepository.findById(newReclamation.getId()).orElse(null);
+		GestionHistorique.updateReclamation(userHistService, oldReclamation, newReclamation, userId, request);
+
+		return reclamationRepository.save(newReclamation);
+	}
+
 	@Override
-	public boolean deleteById(Long id,Long userId, HttpServletRequest request) {
+	public boolean deleteById(Long id, Long userId, HttpServletRequest request) {
 		if (reclamationRepository.existsById(id)) {
-	        Reclamation reclamation = reclamationRepository.findById(id).orElse(null);
-	        GestionHistorique.deleteReclamation(userHistService, reclamation,userId,request);
-	        
+			Reclamation reclamation = reclamationRepository.findById(id).orElse(null);
+			GestionHistorique.deleteReclamation(userHistService, reclamation, userId, request);
+
 			reclamationRepository.deleteById(id);
 			return true;
 		} else {
@@ -74,12 +85,6 @@ public class ReclamationServiceImpl implements ReclamationService {
 	}
 
 	@Override
-	public List<ReclamationStatusCount> countReclamationsByStatus() {
-		// TODO Auto-generated method stub
-		return reclamationRepository.countReclamationsByStatus();
-	}
-
-	@Override
 	public List<Reclamation> getByNomClient(String nomClient) {
 		// TODO Auto-generated method stub
 		return reclamationRepository.findByNomClient(nomClient);
@@ -90,7 +95,7 @@ public class ReclamationServiceImpl implements ReclamationService {
 		// TODO Auto-generated method stub
 		return reclamationRepository.findByAgentId(agentId);
 	}
-	
+
 	@Override
 	public List<Reclamation> getByServiceId(Long serviceId) {
 		// TODO Auto-generated method stub
@@ -103,5 +108,10 @@ public class ReclamationServiceImpl implements ReclamationService {
 		return reclamationRepository.findByDepartementId(departementId);
 	}
 
+	@Override
+	public Reclamation updateReclamationStatus(Reclamation reclamation, String reclamationStatut) {
+		reclamation.setStatus(reclamationStatut);
+		return reclamationRepository.save(reclamation);
+	}
 
 }

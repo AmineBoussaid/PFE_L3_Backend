@@ -43,7 +43,7 @@ public class ServiceEndpoint {
 
     
     @GetMapping("/getByChefService/{chefServiceId}")
-    public Long getByChefService(@PathVariable Long chefServiceId ) {
+    public ServiceD getByChefService(@PathVariable Long chefServiceId ) {
         return serviceDService.getByChefServiceId(chefServiceId);
     }
     

@@ -13,6 +13,6 @@ public interface DepartementService {
 	
 	List<Departement> getAll();
 	
-	Long getByChefDepartement(Long chefDepartementId);
+	Departement getByChefDepartement(Long chefDepartementId);
 
 }

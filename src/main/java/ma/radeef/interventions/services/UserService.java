@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
 import ma.radeef.interventions.models.User;
 
@@ -16,8 +17,10 @@ public interface UserService {
 	
 	User getById(Long id);
 	
-	User getByEmail(String email,String password);
+	User Login(String email,String password, HttpServletRequest request);
 	
+	void Logout(HttpServletRequest request);
+
 	List<TechnicienDto>getTechniciensByServiceId(Long serviceId);
 
 }

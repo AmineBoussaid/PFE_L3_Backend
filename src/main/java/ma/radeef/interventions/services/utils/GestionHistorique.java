@@ -162,5 +162,30 @@ public class GestionHistorique {
         userHistService.save(user, action, details, ip_address);
     }
 
-}
+	public static void loginUser(UserHistService userHistService, User user, HttpServletRequest request) {
+		String action = "Login";
+	    String details = "Login d'Utilisateur: " + user.getUsername() + "," + user.getRole() ;
+	    
+	    // Récupérer l'adresse IP réelle du client
+	    String ip_address = request.getHeader("X-Forwarded-For");
+	    if (ip_address == null || ip_address.isEmpty()) {
+	    	ip_address = request.getRemoteAddr();
+	    }  
+	    
+	    userHistService.save(user, action, details, ip_address);
+	}
+	
+	public static void logoutUser(UserHistService userHistService, User user, HttpServletRequest request) {
+		String action = "Logout";
+	    String details = "Logout d'Utilisateur: " + user.getUsername() + "," + user.getRole() ;
+	    
+	    // Récupérer l'adresse IP réelle du client
+	    String ip_address = request.getHeader("X-Forwarded-For");
+	    if (ip_address == null || ip_address.isEmpty()) {
+	    	ip_address = request.getRemoteAddr();
+	    }  
+	    
+	    userHistService.save(user, action, details, ip_address);
+	}
 
+}

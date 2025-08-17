@@ -29,7 +29,7 @@ public class DepartementServiceImpl implements DepartementService{
 	}
 
 	@Override
-	public Long getByChefDepartement(Long chefDepartementId) {
+	public Departement getByChefDepartement(Long chefDepartementId) {
 		// TODO Auto-generated method stub
 		return departementRepository.findByChefDepartementId(chefDepartementId) ;
 	}

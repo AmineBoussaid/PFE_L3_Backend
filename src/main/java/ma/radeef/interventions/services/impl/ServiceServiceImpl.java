@@ -44,7 +44,7 @@ public class ServiceServiceImpl implements ServiceDService {
 	}
 
 	@Override
-	public Long getByChefServiceId(Long chefServiceId) {
+	public ServiceD getByChefServiceId(Long chefServiceId) {
 		// TODO Auto-generated method stub
 		return serviceRepository.findByChefServiceId(chefServiceId);
 	}

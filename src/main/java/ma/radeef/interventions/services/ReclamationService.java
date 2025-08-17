@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import ma.radeef.interventions.endpoints.dtos.ReclamationStatusCount;
 import ma.radeef.interventions.models.Reclamation;
+import ma.radeef.interventions.models.ReclamationStatut;
 
 @Service
 public interface ReclamationService {
@@ -40,8 +40,7 @@ public interface ReclamationService {
 	/* lister par DepartementId*/
 	List<Reclamation> getByDepartementId(Long departementId);
 	
-	/* count status */
-    List<ReclamationStatusCount> countReclamationsByStatus();
+	Reclamation updateReclamationStatus(Reclamation reclamation, String reclamationStatut);
     
     
 

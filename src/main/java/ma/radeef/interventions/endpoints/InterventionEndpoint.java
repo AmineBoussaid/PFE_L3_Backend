@@ -1,5 +1,7 @@
 package ma.radeef.interventions.endpoints;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import ma.radeef.interventions.endpoints.dtos.InterventionDTO;
+import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
 import ma.radeef.interventions.models.Intervention;
-import ma.radeef.interventions.models.Reclamation;
 import ma.radeef.interventions.services.InterventionService;
 
 @RestController
@@ -26,8 +29,11 @@ public class InterventionEndpoint {
 	private final InterventionService interventionService;
 	
 	@PostMapping("/add/{userId}")
-	public void add(@RequestBody Intervention intervention,@PathVariable("userId") Long userId, HttpServletRequest request) {
-		interventionService.save(intervention,userId,request);
+	public void add(@RequestBody InterventionDTO interventionDTO,@PathVariable("userId") Long userId, HttpServletRequest request) {
+		Intervention intervention = interventionDTO.getIntervention();
+		System.out.println(intervention.toString());
+		List<TechnicienDto> technicienDto = interventionDTO.getTechniciens();
+		interventionService.save(interventionDTO.getIntervention(),technicienDto,userId,request);
 	}
 	
 	@DeleteMapping("deleteById/{id}/{userId}")
@@ -80,6 +86,16 @@ public class InterventionEndpoint {
             return ResponseEntity.notFound().build();
         }
 	}
-
-
+	
+	@GetMapping("/getByCreateurId/{createurId}")
+	public List<Intervention> getByCreateurId(@PathVariable Long createurId){
+		return interventionService.getByCreateurId(createurId);
+	}
+	
+	@GetMapping("/getListDate/{technicienId}")
+	public List<LocalDate> getListDate(@PathVariable Long technicienId){
+		return interventionService.getListDate(technicienId);
+	}
+	
+	
 }

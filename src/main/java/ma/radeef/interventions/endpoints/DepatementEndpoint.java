@@ -32,7 +32,7 @@ public class DepatementEndpoint {
 	}
 	
     @GetMapping("/getByChefDepartement/{chefDepartementId}")
-    public Long getByChefDepartement(@PathVariable Long chefDepartementId) {
+    public Departement getByChefDepartement(@PathVariable Long chefDepartementId) {
         return departementService.getByChefDepartement(chefDepartementId);
     }
     

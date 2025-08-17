@@ -10,4 +10,8 @@ public interface TechnicienSerRepository extends CrudRepository<TechnicienSer, L
 
 	List<TechnicienSer> findAll();
 	
+	TechnicienSer findByTechnicienId(Long technicienId);
+	
+	TechnicienSer findByTechnicienIdAndServiceId(Long technicienId, Long ServiceId);
+
 }

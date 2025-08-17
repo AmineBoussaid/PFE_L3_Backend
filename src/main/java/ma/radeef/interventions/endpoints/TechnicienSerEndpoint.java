@@ -1,6 +1,7 @@
 package ma.radeef.interventions.endpoints;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import ma.radeef.interventions.models.ServiceD;
 import ma.radeef.interventions.models.TechnicienSer;
 import ma.radeef.interventions.services.TechnicienSerService;
 
@@ -30,7 +32,6 @@ public class TechnicienSerEndpoint {
 	@GetMapping("/getAll")
 	public List<TechnicienSer> getAll(){
 		return technicienSerService.getAll();
-		
 	}
 	
 	@DeleteMapping("deleteById/{id}")
@@ -42,4 +43,14 @@ public class TechnicienSerEndpoint {
             return ResponseEntity.notFound().build();
         }
     }
+	@GetMapping("/getServiceByTechnicienId/{technicienId}")
+	public  Optional<ServiceD> getServiceByTechnicienId(@PathVariable Long technicienId) {
+		return technicienSerService.getServiceByTechnicienId(technicienId);
+	}
+	
+	@DeleteMapping("/deleteByTechnicienService/{technicienId}/{serviceId}")
+	public boolean deleteByTechnicienService(@PathVariable Long technicienId, @PathVariable Long serviceId) {
+		return technicienSerService.deleteByTechnicienService(technicienId, serviceId);
+	}
+	
 }

@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "technicien_service")
-public class TechnicienSer {
+@Entity(name = "technicien_equipe")
+public class TechnicienEquipe {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class TechnicienSer {
     private User technicien;
 
 	@ManyToOne
-    @JoinColumn(name = "service_id")
-    private ServiceD service;
-
+    @JoinColumn(name = "equipe_id")
+    private Equipe equipe;
+	
 }

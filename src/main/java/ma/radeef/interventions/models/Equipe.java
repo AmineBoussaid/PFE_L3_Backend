@@ -1,55 +1,55 @@
 package ma.radeef.interventions.models;
 
+
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor 
+@AllArgsConstructor
 @Entity
-public class User {
+public class Equipe {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column
-	private String username;
-	
-	@Column
-	private String password;
-	
-	@Column
-	private String email;
-	
-	@Column
-	private String role;
-	
-	@OneToMany(mappedBy = "technicien")
-    private Set<TechnicienSer> technicienServices;
-	
-	@OneToMany(mappedBy = "technicien")
-    private Set<TechnicienEquipe> technicienEquipes;
+	private String nom;
+
+	@ManyToOne
+	private User chefEquipe;
 	
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private String created_at;
-    
-    @Temporal(TemporalType.TIMESTAMP)
-	@Column
-    private Date last_login;
+    private String createdAt;
     
     @Column
-    private String description;
+    private String disabledAt;
+    
+    @Column
+    private boolean active;
+    
+    @OneToOne(fetch = FetchType.LAZY )
+	@JsonIgnore
+    @JoinColumn(name = "intervention_id")
+    private Intervention intervention;
+    
+    @OneToMany(mappedBy = "equipe")
+    private Set<TechnicienEquipe> technicienEquipes;
+
 }

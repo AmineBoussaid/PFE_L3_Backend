@@ -1,6 +1,5 @@
 package ma.radeef.interventions.endpoints;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.endpoints.dtos.ReclamationStatusCount;
 import ma.radeef.interventions.models.Reclamation;
 import ma.radeef.interventions.services.ReclamationService;
-import ma.radeef.interventions.services.UserHistService;
-import ma.radeef.interventions.services.utils.GestionHistorique;
 
 @RestController
 @RequestMapping("/api/reclamations")
@@ -92,12 +88,6 @@ public class ReclamationEndpoint {
 	@GetMapping("/getByDepartementId/{departementId}")
 	public List<Reclamation> getByDepartementId(@PathVariable Long departementId) {
 		return reclamationService.getByDepartementId(departementId);
-	}
-	
-    @GetMapping("/status")
-    public List<ReclamationStatusCount> countReclamationsByStatus() {
-        return reclamationService.countReclamationsByStatus();
-    }
-    
+	}    
 	
 }

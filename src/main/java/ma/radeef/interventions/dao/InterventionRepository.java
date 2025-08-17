@@ -20,5 +20,7 @@ public interface InterventionRepository extends CrudRepository<Intervention, Lon
 	List<Intervention> findByTechnicienId(Long technicienId);
 	
 	Optional<Intervention> findByReclamationIdFonctionnel(String idFonctionnel);
-
+	
+	List<Intervention> findByCreateurId(Long createurId);
+	
 }

@@ -17,7 +17,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	
     User findByEmail(String email);
 
-    @Query("SELECT new ma.radeef.interventions.endpoints.dtos.TechnicienDto(u.id, u.username, u.email, u.role, s.id, s.nom) " +
+    @Query("SELECT new ma.radeef.interventions.endpoints.dtos.TechnicienDto(u.id, u.username, u.email, u.role, u.description, s.id, s.nom) " +
             "FROM User u " +
             "JOIN u.technicienServices ts " +
             "JOIN ts.service s " +

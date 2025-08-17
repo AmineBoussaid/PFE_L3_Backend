@@ -2,11 +2,11 @@ package ma.radeef.interventions.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import ma.radeef.interventions.models.ServiceD;
 
-
-
-@org.springframework.stereotype.Service
+@Service
 public interface ServiceDService {
 	
 	void save(ServiceD serviceD);
@@ -17,6 +17,6 @@ public interface ServiceDService {
 	
 	List<ServiceD> getByDepartementId(Long departementId);
     
-    Long getByChefServiceId(Long chefServiceId);
+	ServiceD getByChefServiceId(Long chefServiceId);
 
 }

@@ -13,6 +13,7 @@ public class TechnicienDto {
     private String username;
     private String email;
     private String role;
+    private String description;
     private Long serviceId;
     private String serviceName;
     
