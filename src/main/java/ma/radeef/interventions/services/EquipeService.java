@@ -13,4 +13,6 @@ public interface EquipeService {
 	
 	List<Equipe> getAll();
 	
+	public boolean deleteById(Long id);
+	
 }

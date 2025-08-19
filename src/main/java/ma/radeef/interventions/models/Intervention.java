@@ -3,6 +3,7 @@ package ma.radeef.interventions.models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -68,7 +69,7 @@ public class Intervention {
     @JoinColumn(name = "technicien_id")
     private User technicien;
 	
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 	

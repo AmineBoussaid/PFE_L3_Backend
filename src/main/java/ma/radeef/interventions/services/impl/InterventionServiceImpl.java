@@ -48,10 +48,13 @@ public class InterventionServiceImpl implements InterventionService{
 		if(intervention.getTechnicien() == null && intervention.getEquipe() != null) {
 			
 			intervention.getEquipe().setActive(true);
-			Equipe equipe = equipeRepository.save(intervention.getEquipe());
 			
-			intervention.setEquipe(equipe);			
-			equipe.setIntervention(interventionRepository.save(intervention));;
+			Equipe equipe = equipeRepository.save(intervention.getEquipe());
+
+			intervention.setEquipe(equipe);	
+			Intervention intervention_1 = interventionRepository.save(intervention);
+
+			equipe.setIntervention_id(intervention_1.getId());;
 			equipeRepository.save(equipe);
 			
 			for (TechnicienDto technicienDTO : techniciens) {
@@ -62,15 +65,23 @@ public class InterventionServiceImpl implements InterventionService{
 		      technicienEquipe.setEquipe(equipe);
 		      technicienEquipe.setTechnicien(technicien);
 		      technicienEquipeRepository.save(technicienEquipe);
+		      
+		      reclamationService.updateReclamationStatus(intervention_1.getReclamation(), "En cours");
+		      InterventionHist interventionHist = interventionHistoriqueMapper.toHistorique(intervention_1);
+		      interventionHistRepository.save(interventionHist);
+		      GestionHistorique.createIntervention(userHistService, intervention_1, userId, request);
+
             }
+			
 		}else {
-			intervention = interventionRepository.save(intervention);
+						
+			Intervention intervention_1 = interventionRepository.save(intervention);
+		    reclamationService.updateReclamationStatus(intervention_1.getReclamation(), "En cours");
+		    InterventionHist interventionHist = interventionHistoriqueMapper.toHistorique(intervention_1);
+		    interventionHistRepository.save(interventionHist);
+		    GestionHistorique.createIntervention(userHistService, intervention_1, userId, request);
 		}
-		System.out.println(intervention.getReclamation().toString());
 		
-        InterventionHist interventionHist = interventionHistoriqueMapper.toHistorique(intervention);
-        interventionHistRepository.save(interventionHist);
-		GestionHistorique.createIntervention(userHistService, intervention, userId, request);
 		
 	}
     
@@ -90,12 +101,44 @@ public class InterventionServiceImpl implements InterventionService{
     }
 
 	@Override
-	public Intervention updateIntervention(Intervention newIntervention, Long userId, HttpServletRequest request) {
+	public Intervention updateIntervention(Intervention newIntervention, List<TechnicienDto> techniciens, Long userId, HttpServletRequest request) {
 		// TODO Auto-generated method stub
+		
 		Intervention oldIntervention = interventionRepository.findById(newIntervention.getId()).orElse(null);
-        GestionHistorique.updateIntervention(userHistService, oldIntervention, newIntervention, userId,request);
+        GestionHistorique.updateIntervention(userHistService, oldIntervention, newIntervention, userId, request);
+        
+        if(newIntervention.getStatus() == "Terminee") {
+		    reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Terminee");
+        }
+        
+		if(newIntervention.getTechnicien() == null && newIntervention.getEquipe() != null) {
+			
+			newIntervention.getEquipe().setActive(true);
+			Equipe equipe = equipeRepository.save(newIntervention.getEquipe());
+			
+			newIntervention.setEquipe(equipe);	
+			Intervention intervention_1 = interventionRepository.save(newIntervention);
 
-		return interventionRepository.save(newIntervention);
+			equipe.setIntervention_id(intervention_1.getId());;
+			equipeRepository.save(equipe);
+			
+			for (TechnicienDto technicienDTO : techniciens) {
+		       TechnicienEquipe technicienEquipe = new TechnicienEquipe();
+		       User technicien = new User();
+		       technicien.setId(technicienDTO.getUserId());
+		          
+		      technicienEquipe.setEquipe(equipe);
+		      technicienEquipe.setTechnicien(technicien);
+		      technicienEquipeRepository.save(technicienEquipe);   
+            }
+			
+			return intervention_1;
+			
+		}else {
+						
+			return interventionRepository.save(newIntervention);
+		}
+
 	}
 
 	@Override

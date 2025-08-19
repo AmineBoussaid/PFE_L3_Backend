@@ -30,7 +30,7 @@ public interface InterventionService {
     /* delete par id */
     public boolean deleteById(Long id, Long userId, HttpServletRequest request);
     
-    Intervention updateIntervention(Intervention intervention, Long userId, HttpServletRequest request);
+    Intervention updateIntervention(Intervention intervention, List<TechnicienDto> techniciens, Long userId, HttpServletRequest request);
     
 	/* lister par IdFonctionnel*/
     Intervention getByReclamationIdFonctionnel(String idFonctionnel);

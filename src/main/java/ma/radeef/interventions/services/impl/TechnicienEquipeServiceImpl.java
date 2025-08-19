@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import ma.radeef.interventions.dao.TechnicienEquipeRepository;
 import ma.radeef.interventions.models.TechnicienEquipe;
-import ma.radeef.interventions.models.TechnicienSer;
 import ma.radeef.interventions.services.TechnicienEquipeService;
 
 @Service
@@ -18,22 +17,31 @@ public class TechnicienEquipeServiceImpl implements TechnicienEquipeService {
 	
 	@Override
 	public void save(TechnicienEquipe technicienEquipe) {
-		// TODO Auto-generated method stub
 		technicienEquipeRepository.save(technicienEquipe);
 	}
 
 	@Override
 	public List<TechnicienEquipe> getAll() {
-		// TODO Auto-generated method stub
 		return technicienEquipeRepository.findAll();
 	}
 
 	@Override
 	public boolean deleteByTechnicienEquipe(Long technicienId, Long equipeId) {
-		// TODO Auto-generated method stub
 		TechnicienEquipe technicienEquipe =  technicienEquipeRepository.findByTechnicienIdAndEquipeId(technicienId, equipeId);
 		if(technicienEquipe != null) {
 			technicienEquipeRepository.deleteById(technicienEquipe.getId());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteByEquipeId(Long equipeId) {
+		List<TechnicienEquipe> techniciensEquipe =  technicienEquipeRepository.findByEquipeId(equipeId);
+		if(techniciensEquipe != null) {
+			for (TechnicienEquipe technicienEquipe : techniciensEquipe) {
+				technicienEquipeRepository.deleteById(technicienEquipe.getId());
+			}
 			return true;
 		}
 		return false;

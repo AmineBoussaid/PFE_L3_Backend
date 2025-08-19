@@ -29,11 +29,11 @@ public class InterventionEndpoint {
 	private final InterventionService interventionService;
 	
 	@PostMapping("/add/{userId}")
-	public void add(@RequestBody InterventionDTO interventionDTO,@PathVariable("userId") Long userId, HttpServletRequest request) {
+	public void add(@RequestBody InterventionDTO interventionDTO, @PathVariable("userId") Long userId, HttpServletRequest request) {
 		Intervention intervention = interventionDTO.getIntervention();
 		System.out.println(intervention.toString());
 		List<TechnicienDto> technicienDto = interventionDTO.getTechniciens();
-		interventionService.save(interventionDTO.getIntervention(),technicienDto,userId,request);
+		interventionService.save(intervention,technicienDto,userId,request);
 	}
 	
 	@DeleteMapping("deleteById/{id}/{userId}")
@@ -47,8 +47,10 @@ public class InterventionEndpoint {
     }
 	
     @PutMapping("/update/{userId}")
-    public Intervention updateIntervention(@RequestBody Intervention newIntervention,@PathVariable("userId") Long userId, HttpServletRequest request) {
-        return interventionService.updateIntervention(newIntervention,userId, request);
+    public Intervention updateIntervention(@RequestBody InterventionDTO interventionDTO, @PathVariable("userId") Long userId, HttpServletRequest request) {
+    	Intervention newIntervention = interventionDTO.getIntervention();
+		List<TechnicienDto> technicienDto = interventionDTO.getTechniciens();
+        return interventionService.updateIntervention(newIntervention, technicienDto, userId, request);
     }
 	
 	@GetMapping("/getAll")

@@ -15,6 +15,7 @@ public class EquipeServiceImpl implements EquipeService{
 	
 	
 	private final EquipeRepository equipeRepository;
+	private final TechnicienEquipeServiceImpl technicienEquipeServiceImpl;
 	
 	@Override
 	public void save(Equipe equipe) {
@@ -27,6 +28,17 @@ public class EquipeServiceImpl implements EquipeService{
 	public List<Equipe> getAll() {
 		// TODO Auto-generated method stub
 		return equipeRepository.findAll();
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		// TODO Auto-generated method stub
+		if( equipeRepository.existsById(id)) {
+			technicienEquipeServiceImpl.deleteByEquipeId(id);
+			equipeRepository.deleteById(id);
+			return true;
+		}
+		return false;
 	}
 	
 

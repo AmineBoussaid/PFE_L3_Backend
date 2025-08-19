@@ -4,6 +4,7 @@ package ma.radeef.interventions.models;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,10 +45,8 @@ public class Equipe {
     @Column
     private boolean active;
     
-    @OneToOne(fetch = FetchType.LAZY )
-	@JsonIgnore
-    @JoinColumn(name = "intervention_id")
-    private Intervention intervention;
+    @Column
+    private Long intervention_id;
     
     @OneToMany(mappedBy = "equipe")
     private Set<TechnicienEquipe> technicienEquipes;

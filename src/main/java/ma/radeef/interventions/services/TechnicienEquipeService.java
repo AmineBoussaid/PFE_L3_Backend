@@ -13,6 +13,8 @@ public interface TechnicienEquipeService {
 	
 	List<TechnicienEquipe> getAll();
 	
+	public boolean deleteByEquipeId(Long equipeId);
+	
     public boolean deleteByTechnicienEquipe(Long technicienId, Long equipeId);
 
 

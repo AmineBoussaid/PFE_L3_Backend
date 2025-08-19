@@ -138,9 +138,14 @@ public class GestionHistorique {
         {
         	details += "Service modifié de "+ oldIntervention.getService().getNom() + " à " + newIntervention.getService().getNom() + " . " ;
         }
-        if (!Objects.equals(oldIntervention.getTechnicien().getId(), newIntervention.getTechnicien().getId()))
+
+        if (newIntervention.getEquipe() == null && newIntervention.getTechnicien() != null)
         {
-        	details += "Technicien modifié de "+ oldIntervention.getTechnicien().getUsername() + " à " + newIntervention.getTechnicien().getUsername() + " . " ;
+            	details += "Changement de Equipe à Technicien" ;
+        }
+        if (newIntervention.getEquipe() != null && newIntervention.getTechnicien() == null)
+        {
+            	details += "Changement de Technicien à Equipe" ;
         }
         
         user.setId(userId);

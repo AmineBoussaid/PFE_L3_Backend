@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import ma.radeef.interventions.models.TechnicienEquipe;
-import ma.radeef.interventions.models.TechnicienSer;
 
 public interface TechnicienEquipeRepository extends CrudRepository<TechnicienEquipe, Long>{
 	
@@ -13,7 +12,11 @@ public interface TechnicienEquipeRepository extends CrudRepository<TechnicienEqu
 	
 	TechnicienEquipe findByTechnicienId(Long technicienId);
 	
+	List<TechnicienEquipe> findByEquipeId(Long technicienId);
+	
 	TechnicienEquipe findByTechnicienIdAndEquipeId(Long technicienId, Long equipeId);
+		
+	boolean deleteByEquipeId(Long equipeId);
 
 
 }

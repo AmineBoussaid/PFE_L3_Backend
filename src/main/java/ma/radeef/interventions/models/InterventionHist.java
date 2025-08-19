@@ -67,6 +67,10 @@ public class InterventionHist{
     private User technicien;
 	
 	@ManyToOne
+    @JoinColumn(name = "equipe_id")
+    private Equipe equipe;
+	
+	@ManyToOne
     @JoinColumn(name = "change_par")
     private User user;
 
