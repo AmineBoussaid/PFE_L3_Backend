@@ -1,13 +1,12 @@
 package ma.radeef.interventions.services.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import ma.radeef.interventions.models.Client;
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.dao.ClientRepository;
+import ma.radeef.interventions.models.Client;
+import ma.radeef.interventions.repositories.ClientRepository;
 import ma.radeef.interventions.services.ClientService;
 
 @Service

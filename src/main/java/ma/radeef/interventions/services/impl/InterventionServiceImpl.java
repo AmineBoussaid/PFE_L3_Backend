@@ -3,43 +3,37 @@ package ma.radeef.interventions.services.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.dao.EquipeRepository;
-import ma.radeef.interventions.dao.InterventionHistRepository;
-import ma.radeef.interventions.dao.InterventionRepository;
-import ma.radeef.interventions.dao.TechnicienEquipeRepository;
-import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
 import ma.radeef.interventions.endpoints.dtos.mappers.InterventionHistoriqueMapper;
 import ma.radeef.interventions.models.Equipe;
 import ma.radeef.interventions.models.Intervention;
-import ma.radeef.interventions.models.InterventionHist;
-import ma.radeef.interventions.models.InterventionStatut;
-import ma.radeef.interventions.models.ReclamationStatut;
-import ma.radeef.interventions.models.TechnicienEquipe;
-import ma.radeef.interventions.models.User;
+import ma.radeef.interventions.models.InterventionHistorique;
+import ma.radeef.interventions.models.Technicien;
+import ma.radeef.interventions.repositories.EquipeRepository;
+import ma.radeef.interventions.repositories.InterventionHistoriqueRepository;
+import ma.radeef.interventions.repositories.InterventionRepository;
 import ma.radeef.interventions.services.InterventionService;
 import ma.radeef.interventions.services.ReclamationService;
-import ma.radeef.interventions.services.UserHistService;
+import ma.radeef.interventions.services.UserHistoriqueService;
 import ma.radeef.interventions.services.utils.GestionHistorique;
 
 @Service
 @RequiredArgsConstructor
-public class InterventionServiceImpl implements InterventionService{
+public class InterventionServiceImpl implements InterventionService {
 	
 	private final InterventionRepository interventionRepository;
 	private final InterventionHistoriqueMapper interventionHistoriqueMapper;
-	private final InterventionHistRepository interventionHistRepository;
+	private final InterventionHistoriqueRepository interventionHistoriqueRepository;
 	private final EquipeRepository equipeRepository;
-	private final UserHistService userHistService;
+	private final UserHistoriqueService userHistoriqueService;
 	private final ReclamationService reclamationService;
-	private final TechnicienEquipeRepository technicienEquipeRepository;
 	
 	@Override
-    public void save(Intervention intervention,List<TechnicienDto> techniciens, Long userId,  HttpServletRequest request) {
+    public void add(Intervention intervention, Long userId) {
 		
 		if (intervention.getStatus() == null) {
             intervention.setStatus("En cours");
@@ -52,46 +46,37 @@ public class InterventionServiceImpl implements InterventionService{
 			Equipe equipe = equipeRepository.save(intervention.getEquipe());
 
 			intervention.setEquipe(equipe);	
-			Intervention intervention_1 = interventionRepository.save(intervention);
+			Intervention intervention1 = interventionRepository.save(intervention);
 
-			equipe.setIntervention_id(intervention_1.getId());;
+			equipe.setIntervention(intervention1);
 			equipeRepository.save(equipe);
 			
-			for (TechnicienDto technicienDTO : techniciens) {
-		       TechnicienEquipe technicienEquipe = new TechnicienEquipe();
-		       User technicien = new User();
-		       technicien.setId(technicienDTO.getUserId());
-		          
-		      technicienEquipe.setEquipe(equipe);
-		      technicienEquipe.setTechnicien(technicien);
-		      technicienEquipeRepository.save(technicienEquipe);
-		      
-		      reclamationService.updateReclamationStatus(intervention_1.getReclamation(), "En cours");
-		      InterventionHist interventionHist = interventionHistoriqueMapper.toHistorique(intervention_1);
-		      interventionHistRepository.save(interventionHist);
-		      GestionHistorique.createIntervention(userHistService, intervention_1, userId, request);
 
-            }
+		    reclamationService.updateReclamationStatus(intervention1.getReclamation(), "En cours");
+		    InterventionHistorique interventionHistorique = interventionHistoriqueMapper.toHistorique(intervention1);
+		    interventionHistoriqueRepository.save(interventionHistorique);
+		    GestionHistorique.createIntervention(userHistoriqueService, intervention1, userId);
+
 			
 		}else {
 						
 			Intervention intervention_1 = interventionRepository.save(intervention);
 		    reclamationService.updateReclamationStatus(intervention_1.getReclamation(), "En cours");
-		    InterventionHist interventionHist = interventionHistoriqueMapper.toHistorique(intervention_1);
-		    interventionHistRepository.save(interventionHist);
-		    GestionHistorique.createIntervention(userHistService, intervention_1, userId, request);
+		    InterventionHistorique interventionHistorique = interventionHistoriqueMapper.toHistorique(intervention_1);
+		    interventionHistoriqueRepository.save(interventionHistorique);
+		    GestionHistorique.createIntervention(userHistoriqueService, intervention_1, userId);
 		}
 		
 		
 	}
     
 	@Override
-	public boolean deleteById(Long id,Long userId, HttpServletRequest request) {
+	public boolean deleteById(Long id,Long userId) {
 		// TODO Auto-generated method stub		
         if (interventionRepository.existsById(id)) {
         	
     		Intervention intervention = interventionRepository.findById(id).orElse(null);
-	        GestionHistorique.deleteIntervention(userHistService, intervention, userId, request);
+	        GestionHistorique.deleteIntervention(userHistoriqueService, intervention, userId);
         	interventionRepository.deleteById(id);
             return true;
             
@@ -101,11 +86,10 @@ public class InterventionServiceImpl implements InterventionService{
     }
 
 	@Override
-	public Intervention updateIntervention(Intervention newIntervention, List<TechnicienDto> techniciens, Long userId, HttpServletRequest request) {
-		// TODO Auto-generated method stub
+	public Intervention updateIntervention(Intervention newIntervention,Long userId) {
 		
 		Intervention oldIntervention = interventionRepository.findById(newIntervention.getId()).orElse(null);
-        GestionHistorique.updateIntervention(userHistService, oldIntervention, newIntervention, userId, request);
+        GestionHistorique.updateIntervention(userHistoriqueService, oldIntervention, newIntervention, userId);
         
         if(newIntervention.getStatus() == "Terminee") {
 		    reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Terminee");
@@ -117,22 +101,13 @@ public class InterventionServiceImpl implements InterventionService{
 			Equipe equipe = equipeRepository.save(newIntervention.getEquipe());
 			
 			newIntervention.setEquipe(equipe);	
-			Intervention intervention_1 = interventionRepository.save(newIntervention);
+			Intervention intervention1 = interventionRepository.save(newIntervention);
 
-			equipe.setIntervention_id(intervention_1.getId());;
+			equipe.setIntervention(intervention1);
 			equipeRepository.save(equipe);
 			
-			for (TechnicienDto technicienDTO : techniciens) {
-		       TechnicienEquipe technicienEquipe = new TechnicienEquipe();
-		       User technicien = new User();
-		       technicien.setId(technicienDTO.getUserId());
-		          
-		      technicienEquipe.setEquipe(equipe);
-		      technicienEquipe.setTechnicien(technicien);
-		      technicienEquipeRepository.save(technicienEquipe);   
-            }
 			
-			return intervention_1;
+			return intervention1;
 			
 		}else {
 						
@@ -172,9 +147,9 @@ public class InterventionServiceImpl implements InterventionService{
 	}
 
 	@Override
-	public Intervention getByReclamationIdFonctionnel(String idFonctionnel) {
+	public Optional<Intervention> getByReclamationIdFonctionnel(String idFonctionnel) {
 		// TODO Auto-generated method stub
-		return interventionRepository.findByReclamationIdFonctionnel(idFonctionnel).orElse(null);
+		return interventionRepository.findByReclamationIdFonctionnel(idFonctionnel);
 	}
 
 	@Override
@@ -200,8 +175,13 @@ public class InterventionServiceImpl implements InterventionService{
 	            dates.add(startDate);
 	        }
 	    }
-	    
 	    return dates;
+	}
+
+	@Override
+	public List<Intervention> getByChefOrTechnicien(Long technicienId) {
+		// TODO Auto-generated method stub
+		return interventionRepository.findByChefOrTechnicien(technicienId);
 	}
 
 	

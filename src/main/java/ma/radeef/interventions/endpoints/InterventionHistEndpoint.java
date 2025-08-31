@@ -10,29 +10,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.models.InterventionHist;
-import ma.radeef.interventions.services.InterventionHistService;
+import ma.radeef.interventions.models.InterventionHistorique;
+import ma.radeef.interventions.services.InterventionHistoriqueService;
 
 @RestController
 @RequestMapping("/api/interventions-historique")
 @RequiredArgsConstructor
 public class InterventionHistEndpoint {
 	
-	private final InterventionHistService interventionHistService;
+	private final InterventionHistoriqueService interventionHistoriqueService;
 	
 	@PostMapping
-	public void add(@RequestBody InterventionHist interventionHist) {
-		interventionHistService.save(interventionHist);
+	public void add(@RequestBody InterventionHistorique interventionHistorique) {
+		interventionHistoriqueService.save(interventionHistorique);
 	}
 	
 	@GetMapping
-	public List<InterventionHist> getAll(){
-		return interventionHistService.getAll();
+	public List<InterventionHistorique> getAll(){
+		return interventionHistoriqueService.getAll();
 	}
 	
 	@GetMapping("/getByIntervention/{interventionId}")
-	public List<InterventionHist> getByIntervention(@PathVariable Long interventionId ) {
-		return interventionHistService.getByInterventionId(interventionId);
+	public List<InterventionHistorique> getByIntervention(@PathVariable Long interventionId ) {
+		return interventionHistoriqueService.getByInterventionId(interventionId);
 	}
 
 }

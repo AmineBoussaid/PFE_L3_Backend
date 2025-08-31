@@ -2,6 +2,7 @@ package ma.radeef.interventions.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,8 +25,8 @@ public class Departement {
 	@Column
 	private String nom;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chef_departement_id")
-	private User chefDepartement;
+	private ChefDepartement chefDepartement;
 
 }

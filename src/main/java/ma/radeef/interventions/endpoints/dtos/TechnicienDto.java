@@ -1,20 +1,20 @@
 package ma.radeef.interventions.endpoints.dtos;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class TechnicienDto {
 
-    private Long userId;
+    private long id;
     private String username;
     private String email;
-    private String role;
     private String description;
-    private Long serviceId;
-    private String serviceName;
+    private ServiceDto service;
     
 }

@@ -15,4 +15,6 @@ public interface EquipeService {
 	
 	public boolean deleteById(Long id);
 	
+	List<Equipe> getByChefEquipeSericeServiceId(Long serviceId);
+	
 }

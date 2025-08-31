@@ -10,41 +10,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.models.ServiceD;
-import ma.radeef.interventions.services.ServiceDService;
+import ma.radeef.interventions.endpoints.dtos.ServiceDto;
+import ma.radeef.interventions.endpoints.dtos.mappers.ServiceDtoMapper;
+import ma.radeef.interventions.models.Service;
+import ma.radeef.interventions.services.ServiceService;
 
 @RestController
 @RequestMapping("/api/services")
 @RequiredArgsConstructor
 public class ServiceEndpoint {
 	
-    private final ServiceDService serviceDService;
+    private final ServiceService serviceService;
+    private final ServiceDtoMapper serviceDtoMapper;
     
 	@PostMapping("/add")
-    public void add(@RequestBody ServiceD serviceD) {
-        serviceDService.save(serviceD);
+    public void add(@RequestBody Service service) {
+        serviceService.save(service);
     }
 
 
 	@GetMapping("/getAll")
-    public List<ServiceD> getAll() {
-        return serviceDService.getAll();
+    public List<ServiceDto> getAll() {
+        return serviceService.getAll().stream().map(s -> serviceDtoMapper.toDto(s)).toList();
     }
     
     @GetMapping("/getById/{id}")
-    public ServiceD getById(@PathVariable Long id) {
-        return serviceDService.getById(id);
+    public ServiceDto getById(@PathVariable Long id) {
+        return serviceDtoMapper.toDto(serviceService.getById(id));
     }
     
     @GetMapping("/getByDepartementId/{departementId}")
-    public List<ServiceD> getByDepartementId(@PathVariable Long departementId) {
-        return serviceDService.getByDepartementId(departementId);
+    public List<ServiceDto> getByDepartementId(@PathVariable Long departementId) {
+        return serviceService.getByDepartementId(departementId).stream().map(s -> serviceDtoMapper.toDto(s)).toList();
     }
 
     
     @GetMapping("/getByChefService/{chefServiceId}")
-    public ServiceD getByChefService(@PathVariable Long chefServiceId ) {
-        return serviceDService.getByChefServiceId(chefServiceId);
+    public ServiceDto getByChefService(@PathVariable Long chefServiceId ) {
+        return serviceDtoMapper.toDto(serviceService.getByChefServiceId(chefServiceId)) ;
     }
     
 

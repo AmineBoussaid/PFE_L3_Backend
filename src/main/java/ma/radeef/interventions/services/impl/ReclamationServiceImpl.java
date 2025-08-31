@@ -4,15 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.dao.ClientRepository;
-import ma.radeef.interventions.dao.ReclamationRepository;
 import ma.radeef.interventions.models.Client;
 import ma.radeef.interventions.models.Reclamation;
-import ma.radeef.interventions.models.ReclamationStatut;
+import ma.radeef.interventions.repositories.ClientRepository;
+import ma.radeef.interventions.repositories.ReclamationRepository;
 import ma.radeef.interventions.services.ReclamationService;
-import ma.radeef.interventions.services.UserHistService;
+import ma.radeef.interventions.services.UserHistoriqueService;
 import ma.radeef.interventions.services.utils.CopieAdresse;
 import ma.radeef.interventions.services.utils.GestionHistorique;
 import ma.radeef.interventions.services.utils.IdFonctionnelCalculator;
@@ -23,11 +21,11 @@ public class ReclamationServiceImpl implements ReclamationService {
 
 	private final ReclamationRepository reclamationRepository;
 
-	private final UserHistService userHistService;
+	private final UserHistoriqueService userHistoriqueService;
 	private final ClientRepository clientRepository;
 
 	@Override
-	public void save(Reclamation reclamation, Long userId, HttpServletRequest request) {
+	public void save(Reclamation reclamation, Long userId) {
 
 		if (reclamation.getCodeAbonnement() != null) {
 			Client client = clientRepository.findByCodeAbonnement(reclamation.getCodeAbonnement());
@@ -43,23 +41,23 @@ public class ReclamationServiceImpl implements ReclamationService {
 			reclamation.setStatus("En attente");
 		}
 
-		GestionHistorique.createReclamation(userHistService, reclamation, userId, request);
+		GestionHistorique.createReclamation(userHistoriqueService, reclamation, userId);
 		reclamationRepository.save(reclamation);
 	}
 
 	@Override
-	public Reclamation updateReclamation(Reclamation newReclamation, Long userId, HttpServletRequest request) {
+	public Reclamation updateReclamation(Reclamation newReclamation, Long userId) {
 		Reclamation oldReclamation = reclamationRepository.findById(newReclamation.getId()).orElse(null);
-		GestionHistorique.updateReclamation(userHistService, oldReclamation, newReclamation, userId, request);
+		GestionHistorique.updateReclamation(userHistoriqueService, oldReclamation, newReclamation, userId);
 
 		return reclamationRepository.save(newReclamation);
 	}
 
 	@Override
-	public boolean deleteById(Long id, Long userId, HttpServletRequest request) {
+	public boolean deleteById(Long id, Long userId) {
 		if (reclamationRepository.existsById(id)) {
 			Reclamation reclamation = reclamationRepository.findById(id).orElse(null);
-			GestionHistorique.deleteReclamation(userHistService, reclamation, userId, request);
+			GestionHistorique.deleteReclamation(userHistoriqueService, reclamation, userId);
 
 			reclamationRepository.deleteById(id);
 			return true;

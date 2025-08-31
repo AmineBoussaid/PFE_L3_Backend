@@ -2,35 +2,33 @@ package ma.radeef.interventions.services.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.dao.ServiceDRepository;
-import ma.radeef.interventions.models.ServiceD;
-import ma.radeef.interventions.services.ServiceDService;
+import ma.radeef.interventions.models.Service;
+import ma.radeef.interventions.repositories.ServiceRepository;
+import ma.radeef.interventions.services.ServiceService;
 
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
-public class ServiceServiceImpl implements ServiceDService {
+public class ServiceServiceImpl implements ServiceService {
 	
-    private final ServiceDRepository serviceRepository;
+    private final ServiceRepository serviceRepository;
 
 	@Override
-	public void save(ServiceD serviceD) {
+	public void save(Service service) {
 		// TODO Auto-generated method stub
-        serviceRepository.save(serviceD);
+        serviceRepository.save(service);
 
 	}
 
 	@Override
-	public ServiceD getById(Long id) {
+	public Service getById(Long id) {
 		// TODO Auto-generated method stub
 		return serviceRepository.findById(id).orElse(null);
 	}
 	
 	
 	@Override
-	public List<ServiceD> getByDepartementId(Long departementId) {
+	public List<Service> getByDepartementId(Long departementId) {
 		// TODO Auto-generated method stub
 		return serviceRepository.findByDepartementId(departementId);
 	}
@@ -38,13 +36,13 @@ public class ServiceServiceImpl implements ServiceDService {
 
 	
 	@Override
-	public List<ServiceD> getAll() {
+	public List<Service> getAll() {
 		// TODO Auto-generated method stub
-        return (List<ServiceD>) serviceRepository.findAll();
+        return (List<Service>) serviceRepository.findAll();
 	}
 
 	@Override
-	public ServiceD getByChefServiceId(Long chefServiceId) {
+	public Service getByChefServiceId(Long chefServiceId) {
 		// TODO Auto-generated method stub
 		return serviceRepository.findByChefServiceId(chefServiceId);
 	}

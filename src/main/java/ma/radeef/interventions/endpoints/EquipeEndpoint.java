@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import ma.radeef.interventions.endpoints.dtos.EquipeDto;
+import ma.radeef.interventions.endpoints.dtos.mappers.EquipeDtoMapper;
 import ma.radeef.interventions.models.Equipe;
 import ma.radeef.interventions.services.EquipeService;
 
@@ -21,6 +23,7 @@ import ma.radeef.interventions.services.EquipeService;
 public class EquipeEndpoint {
 	
 	private final EquipeService equipeService;
+	private final EquipeDtoMapper equipeDtoMapper;
 	
 	@PostMapping("/add")
 	public void add(@RequestBody Equipe equipe) {
@@ -28,8 +31,8 @@ public class EquipeEndpoint {
 	}
 	
 	@GetMapping("/getAll")
-	public List<Equipe> getAll(){
-		return equipeService.getAll();
+	public List<EquipeDto> getAll(){
+		return equipeService.getAll().stream().map(e -> equipeDtoMapper.toDto(e)).toList();
 	}
 	
 	@DeleteMapping("deleteById/{id}")
@@ -42,6 +45,11 @@ public class EquipeEndpoint {
         } else {
             return ResponseEntity.notFound().build();
         }
+	}
+	
+	@GetMapping("/getBySerice/{serviceId}")
+	public List<EquipeDto> getByChefEquipeSericeServiceId(@PathVariable("serviceId") Long serviceId){
+		return equipeService.getByChefEquipeSericeServiceId(serviceId).stream().map(e -> equipeDtoMapper.toDto(e)).toList();
 	}
 	
 	

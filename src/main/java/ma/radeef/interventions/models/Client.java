@@ -30,6 +30,9 @@ public class Client {
 	private String pays;
 	
 	@Column
+	private String codePostal;
+	
+	@Column
 	private String ville;
 	
 	@Column

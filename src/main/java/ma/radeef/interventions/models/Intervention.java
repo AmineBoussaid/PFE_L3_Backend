@@ -3,10 +3,6 @@ package ma.radeef.interventions.models;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -44,32 +39,32 @@ public class Intervention {
 	private LocalDateTime dateFin;
 	
 	@Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private String created_at;
+    private String createdAt;
 	
 	@Column
 	private String description;
 		
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "createur_id")
     private User createur;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reclamation_id")
     private Reclamation reclamation;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departement_id")
     private Departement departement;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
-    private ServiceD service;
+    private Service service;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "technicien_id")
-    private User technicien;
+    private Technicien technicien;
 	
-	@ManyToOne
+	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 	

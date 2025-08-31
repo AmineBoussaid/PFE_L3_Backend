@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.dao.DepartementRepository;
 import ma.radeef.interventions.models.Departement;
+import ma.radeef.interventions.repositories.DepartementRepository;
 import ma.radeef.interventions.services.DepartementService;
 
 @Service

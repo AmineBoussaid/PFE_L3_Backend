@@ -1,10 +1,7 @@
 package ma.radeef.interventions.models;
 
 
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +10,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +32,7 @@ public class Equipe {
 	private String nom;
 
 	@ManyToOne
-	private User chefEquipe;
+	private Technicien chefEquipe;
 	
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private String createdAt;
@@ -45,10 +43,15 @@ public class Equipe {
     @Column
     private boolean active;
     
-    @Column
-    private Long intervention_id;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Intervention intervention;
     
-    @OneToMany(mappedBy = "equipe")
-    private Set<TechnicienEquipe> technicienEquipes;
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "technicien_equipe",
+			joinColumns = @JoinColumn(name = "equipe_id"),
+			inverseJoinColumns = @JoinColumn(name = "technicien_id")
+		)
+    private List<Technicien> techniciens;
 
 }

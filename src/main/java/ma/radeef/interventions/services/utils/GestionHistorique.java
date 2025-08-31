@@ -2,37 +2,26 @@ package ma.radeef.interventions.services.utils;
 
 import java.util.Objects;
 
-import jakarta.servlet.http.HttpServletRequest;
 import ma.radeef.interventions.models.Intervention;
 import ma.radeef.interventions.models.Reclamation;
 import ma.radeef.interventions.models.User;
-import ma.radeef.interventions.services.UserHistService;
+import ma.radeef.interventions.services.UserHistoriqueService;
 
 public class GestionHistorique {
 	
     static User user = new User();
 	
-    public static void createReclamation(UserHistService userHistService, Reclamation reclamation ,Long userId, HttpServletRequest request) {
+    public static void createReclamation(UserHistoriqueService userHistoriqueService, Reclamation reclamation ,Long userId) {
         String action = "Creation";
         String details = "Reclamation N°: " + reclamation.getIdFonctionnel() + " crée";
-        
-        // Récupérer l'adresse IP réelle du client
-        String ip_address = request.getHeader("X-Forwarded-For");
-        if (ip_address == null || ip_address.isEmpty()) {
-        	ip_address = request.getRemoteAddr();
-        }        
+              
         user.setId(userId);
-        userHistService.save(user, action, details, ip_address);
+        userHistoriqueService.save(user, action, details);
     }
     
-    public static void updateReclamation(UserHistService userHistService, Reclamation oldReclamation, Reclamation newReclamation, Long userId, HttpServletRequest request) {
+    public static void updateReclamation(UserHistoriqueService userHistoriqueService, Reclamation oldReclamation, Reclamation newReclamation, Long userId) {
         String action = "Modification";
-        
-        // Récupérer l'adresse IP réelle du client
-        String ip_address = request.getHeader("X-Forwarded-For");
-        if (ip_address == null || ip_address.isEmpty()) {
-        	ip_address = request.getRemoteAddr();
-        }         
+              
         
         String details = "Reclamation N°: " + oldReclamation.getIdFonctionnel() + " modifiée. ";  
         if (!Objects.equals(oldReclamation.getNomClient(), newReclamation.getNomClient()))
@@ -77,46 +66,30 @@ public class GestionHistorique {
         }
         
         user.setId(userId);
-        userHistService.save(user, action, details, ip_address);
+        userHistoriqueService.save(user, action, details);
     }
 
-    public static void deleteReclamation(UserHistService userHistService, Reclamation reclamation, Long userId, HttpServletRequest request) {
+    public static void deleteReclamation(UserHistoriqueService userHistoriqueService, Reclamation reclamation, Long userId) {
         String action = "Supression";
         String details = "Reclamation N°: " + reclamation.getIdFonctionnel() + " suprimée. ";
         
-        // Récupérer l'adresse IP réelle du client
-        String ip_address = request.getHeader("X-Forwarded-For");
-        if (ip_address == null || ip_address.isEmpty()) {
-        	ip_address = request.getRemoteAddr();
-        }  
-        
         user.setId(userId);
-        userHistService.save(user, action, details, ip_address);
+        userHistoriqueService.save(user, action, details);
     }
 
 
-    public static void createIntervention(UserHistService userHistService, Intervention intervention ,Long userId, HttpServletRequest request) {
+    public static void createIntervention(UserHistoriqueService userHistoriqueService, Intervention intervention ,Long userId) {
         String action = "Creation";
         String details = "Intervention N°: " + intervention.getReclamation().getIdFonctionnel() + " crée";
-        
-        // Récupérer l'adresse IP réelle du client
-        String ip_address = request.getHeader("X-Forwarded-For");
-        if (ip_address == null || ip_address.isEmpty()) {
-        	ip_address = request.getRemoteAddr();
-        }        
+
         user.setId(userId);
-        userHistService.save(user, action, details, ip_address);
+        userHistoriqueService.save(user, action, details);
     }
 
-    public static void updateIntervention(UserHistService userHistService, Intervention oldIntervention, Intervention newIntervention, Long userId, HttpServletRequest request) {
+    public static void updateIntervention(UserHistoriqueService userHistoriqueService, Intervention oldIntervention, Intervention newIntervention, Long userId) {
         String action = "Modification";
         
-        // Récupérer l'adresse IP réelle du client
-        String ip_address = request.getHeader("X-Forwarded-For");
-        if (ip_address == null || ip_address.isEmpty()) {
-        	ip_address = request.getRemoteAddr();
-        }         
-        
+              
         String details = "Intervention N°: " + oldIntervention.getReclamation().getIdFonctionnel() + " modifiée. ";  
         if (!Objects.equals(oldIntervention.getTitre(), newIntervention.getTitre()))
         {
@@ -139,58 +112,42 @@ public class GestionHistorique {
         	details += "Service modifié de "+ oldIntervention.getService().getNom() + " à " + newIntervention.getService().getNom() + " . " ;
         }
 
-        if (newIntervention.getEquipe() == null && newIntervention.getTechnicien() != null)
+        if (newIntervention.getEquipe() == null && newIntervention.getTechnicien() != null && !Objects.equals(oldIntervention.getTechnicien(), newIntervention.getTechnicien()) )
         {
             	details += "Changement de Equipe à Technicien" ;
         }
-        if (newIntervention.getEquipe() != null && newIntervention.getTechnicien() == null)
+        if (newIntervention.getEquipe() != null && newIntervention.getTechnicien() == null && !Objects.equals(oldIntervention.getEquipe(), newIntervention.getEquipe()))
         {
             	details += "Changement de Technicien à Equipe" ;
         }
         
         user.setId(userId);
-        userHistService.save(user, action, details, ip_address);
+        userHistoriqueService.save(user, action, details);
     }
 
     
-    public static void deleteIntervention(UserHistService userHistService, Intervention Intervention , Long userId, HttpServletRequest request) {
+    public static void deleteIntervention(UserHistoriqueService userHistoriqueService, Intervention Intervention , Long userId) {
         String action = "Supression";
         String details = "Intervention N°: " + Intervention.getReclamation().getIdFonctionnel() + " suprimée. ";
         
-        // Récupérer l'adresse IP réelle du client
-        String ip_address = request.getHeader("X-Forwarded-For");
-        if (ip_address == null || ip_address.isEmpty()) {
-        	ip_address = request.getRemoteAddr();
-        }  
-        
         user.setId(userId);
-        userHistService.save(user, action, details, ip_address);
+        userHistoriqueService.save(user, action, details);
     }
 
-	public static void loginUser(UserHistService userHistService, User user, HttpServletRequest request) {
+	public static void loginUser(UserHistoriqueService userHistoriqueService, User user) {
 		String action = "Login";
-	    String details = "Login d'Utilisateur: " + user.getUsername() + "," + user.getRole() ;
+	    String details = "Login d'Utilisateur: " + user.getUsername() ;
 	    
-	    // Récupérer l'adresse IP réelle du client
-	    String ip_address = request.getHeader("X-Forwarded-For");
-	    if (ip_address == null || ip_address.isEmpty()) {
-	    	ip_address = request.getRemoteAddr();
-	    }  
 	    
-	    userHistService.save(user, action, details, ip_address);
+	    userHistoriqueService.save(user, action, details);
 	}
 	
-	public static void logoutUser(UserHistService userHistService, User user, HttpServletRequest request) {
+	public static void logoutUser(UserHistoriqueService userHistoriqueService, User user) {
 		String action = "Logout";
-	    String details = "Logout d'Utilisateur: " + user.getUsername() + "," + user.getRole() ;
+	    String details = "Logout d'Utilisateur: " + user.getUsername() ;
 	    
-	    // Récupérer l'adresse IP réelle du client
-	    String ip_address = request.getHeader("X-Forwarded-For");
-	    if (ip_address == null || ip_address.isEmpty()) {
-	    	ip_address = request.getRemoteAddr();
-	    }  
 	    
-	    userHistService.save(user, action, details, ip_address);
+	    userHistoriqueService.save(user, action, details);
 	}
 
 }

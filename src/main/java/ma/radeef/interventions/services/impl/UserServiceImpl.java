@@ -3,14 +3,16 @@ package ma.radeef.interventions.services.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.dao.UserRepository;
-import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
+import ma.radeef.interventions.models.Technicien;
 import ma.radeef.interventions.models.User;
-import ma.radeef.interventions.services.UserHistService;
+import ma.radeef.interventions.repositories.TechnicienRepository;
+import ma.radeef.interventions.repositories.UserRepository;
+import ma.radeef.interventions.services.UserHistoriqueService;
 import ma.radeef.interventions.services.UserService;
 import ma.radeef.interventions.services.utils.GestionHistorique;
 
@@ -20,10 +22,9 @@ import ma.radeef.interventions.services.utils.GestionHistorique;
 public class UserServiceImpl implements UserService {
 	
 	private final UserRepository userRepository;
-	private final UserHistService userHistService;
+	private final UserHistoriqueService userHistoriqueService;
+	private final TechnicienRepository technicienRepository;
     static User user = new User();
-
-
 	
 	@Override
 	public void save(User user) {
@@ -48,21 +49,25 @@ public class UserServiceImpl implements UserService {
         return user;
     }
     
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+    
 
 	@Override
-    public List<TechnicienDto> getTechniciensByServiceId(Long serviceId) {
-        return userRepository.findTechniciensByServiceId(serviceId);
+    public List<Technicien> getTechniciensByServiceId(Long serviceId) {
+        return technicienRepository.findByServiceId(serviceId);
     }
 	
 	
 	@Override
-	public User Login(String email, String password ,HttpServletRequest request) {
-	    user = userRepository.findByEmail(email);
+	public User Login(String email, String password) {
+	    User user = getByEmail(email);
 	    if (user != null && user.getPassword().equals(password)) {
 	    	
-            user.setLast_login(new Date());
-            GestionHistorique.loginUser(userHistService, user, request);;
-            userRepository.save(user); // Enregistrer l'utilisateur mis à jour
+            user.setLastLogin(new Date());
+            GestionHistorique.loginUser(userHistoriqueService, user);
             user.setPassword(null); // Assurez-vous que la classe User a un setter pour le mot de passe
 
             return user;
@@ -73,12 +78,23 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void Logout(HttpServletRequest request) {
+	public void Logout() {
 		// TODO Auto-generated method stub
 		 if (user != null) {
-			 GestionHistorique.logoutUser(userHistService, user, request);;
+			 GestionHistorique.logoutUser(userHistoriqueService, user);
 		 }
 	}
+
+	@Override
+	public User getByUsername(String username) {
+		return userRepository.findByUsername(username).orElse(null);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return getByUsername(username);
+	}
+
 	
 
 }

@@ -2,14 +2,14 @@ package ma.radeef.interventions.services;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
+import ma.radeef.interventions.models.Technicien;
 import ma.radeef.interventions.models.User;
 
 @Service
-public interface UserService {
+public interface UserService extends UserDetailsService {
 	
 	void save(User user);
 	
@@ -17,10 +17,14 @@ public interface UserService {
 	
 	User getById(Long id);
 	
-	User Login(String email,String password, HttpServletRequest request);
+	User Login(String email,String password);
 	
-	void Logout(HttpServletRequest request);
+	void Logout();
 
-	List<TechnicienDto>getTechniciensByServiceId(Long serviceId);
+	List<Technicien> getTechniciensByServiceId(Long serviceId);
+
+	User getByEmail(String email);
+	
+	User getByUsername(String username);
 
 }

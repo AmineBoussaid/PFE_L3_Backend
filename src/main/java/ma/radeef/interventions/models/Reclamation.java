@@ -2,8 +2,7 @@ package ma.radeef.interventions.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -63,22 +62,21 @@ public class Reclamation {
 	private String email;
 	
 	@Column
-	//@Enumerated(EnumType.STRING)
 	private String status ;
 	
 	@Column
 	private String description;
 	
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private String created_at;
+    private String createdAt;
 	
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id")
     private User agent;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
-    private ServiceD service;
+    private Service service;
 	
     
 

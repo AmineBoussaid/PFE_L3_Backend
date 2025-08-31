@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import ma.radeef.interventions.endpoints.dtos.TechnicienDto;
+import ma.radeef.interventions.endpoints.dtos.UserDto;
+import ma.radeef.interventions.endpoints.dtos.mappers.UserDtoMapper;
+import ma.radeef.interventions.models.Technicien;
 import ma.radeef.interventions.models.User;
 import ma.radeef.interventions.services.UserService;
 
@@ -24,6 +23,8 @@ import ma.radeef.interventions.services.UserService;
 public class UserEndpoint {
 	
 	private final UserService userService;
+	private final UserDtoMapper userDtoMapper;
+
 	
 	@PostMapping("/add")
 	public void add(@RequestBody User user) {
@@ -31,27 +32,29 @@ public class UserEndpoint {
 	}
 	
 	@GetMapping("/getAll")
-	public List<User> getAll(){
-		return userService.getAll();
+	public List<UserDto> getAll(){
+		return userService.getAll().stream().map(i -> userDtoMapper.toDto(i)).toList();
 	}
 	
 	@GetMapping("/getById/{id}")
-	public User getById(@PathVariable Long id){
-		return userService.getById(id);
+	public UserDto getById(@PathVariable Long id){
+		
+		return userDtoMapper.toDto(userService.getById(id));
 	}
 	
 	@GetMapping("/getTechniciensByServiceId/{serviceId}")
-    public List<TechnicienDto> getTechniciensByServiceId(@PathVariable Long serviceId) {
+    public List<Technicien> getTechniciensByServiceId(@PathVariable Long serviceId) {
         return userService.getTechniciensByServiceId(serviceId);
     }
 	
-	@GetMapping("/login/{email}/{password}")
-	public ResponseEntity<User> login(@PathVariable String email, @PathVariable String password, HttpServletRequest request) {
-	    User user = userService.Login(email, password, request);
+	@GetMapping("/getByUsername/{username}")
+	public ResponseEntity<UserDto> login(@PathVariable String username) {
+	    User user = userService.getByUsername(username);
 	    if (user != null) {
-	        return ResponseEntity.ok(user);
+	    	UserDto userDto = userDtoMapper.toDto(user);
+	        return ResponseEntity.ok(userDto);
 	    }
-	    return ResponseEntity.notFound().build(); // Retourne un statut 401 si non autorisé
+	    return ResponseEntity.notFound().build();
 	}
 	
 }
