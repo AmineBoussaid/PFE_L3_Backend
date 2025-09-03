@@ -41,5 +41,6 @@ public class Client {
 	@Column
 	private String nomRue;
 	
+	
 
 }
