@@ -1,5 +1,7 @@
 package ma.radeef.interventions.services.impl;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -36,8 +38,14 @@ public class EquipeServiceImpl implements EquipeService {
 
 	@Override
 	public List<Equipe> getByChefEquipeSericeServiceId(Long serviceId) {
-		// TODO Auto-generated method stub
 		return equipeRepository.findByChefEquipeServiceId(serviceId);
+	}
+
+	@Override
+	public Equipe updateEquipeActive(Equipe equipe) {
+		equipe.setActive(false);
+	    equipe.setDisabledAt(LocalDateTime.now());
+		return equipeRepository.save(equipe);
 	}
 
 }

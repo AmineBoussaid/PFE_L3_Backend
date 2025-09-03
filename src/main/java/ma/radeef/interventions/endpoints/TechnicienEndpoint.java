@@ -26,7 +26,8 @@ public class TechnicienEndpoint {
 	public TechnicienDto getById(@PathVariable Long id) {
 	    Technicien technicien = technicienService.getById(id)
 	                           .orElseThrow(() -> new RuntimeException("Technicien not found with id " + id));
-	    return technicienDtoMapper.toDto(technicien);
+	    TechnicienDto technicienDto = technicienDtoMapper.toDto(technicien);
+	    return technicienDto;
 	}
 
 	

@@ -22,7 +22,8 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 	@Query(nativeQuery = true, value =  "SELECT i.* FROM intervention i"
 			+ " left JOIN equipe e ON i.equipe_id = e.id"
 			+ " left JOIN technicien_equipe t ON t.equipe_id = e.id"
-			+ " WHERE i.technicien_id = :technicienId  OR e.chef_equipe_id = :technicienId OR t.technicien_id = :technicienId")
+			+ " WHERE e.chef_equipe_id = :technicienId OR t.technicien_id = :technicienId OR i.technicien_id = :technicienId"
+			+ " GROUP BY (i.id)")
 		List<Intervention> findByChefOrTechnicien(@Param("technicienId") Long technicienId);
 
 	Optional<Intervention> findByReclamationIdFonctionnel(String idFonctionnel);

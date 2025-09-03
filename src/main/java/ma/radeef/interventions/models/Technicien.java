@@ -1,5 +1,6 @@
 package ma.radeef.interventions.models;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -8,12 +9,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor 
 @Entity
 public class Technicien extends User {
 	
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id")
     private Service service;
 	
 	@ManyToMany(fetch = FetchType.LAZY)

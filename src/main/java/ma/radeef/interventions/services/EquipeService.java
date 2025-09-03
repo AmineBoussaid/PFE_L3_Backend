@@ -10,11 +10,8 @@ import ma.radeef.interventions.models.Equipe;
 public interface EquipeService {
 	
 	void save(Equipe equipe);
-	
 	List<Equipe> getAll();
-	
 	public boolean deleteById(Long id);
-	
 	List<Equipe> getByChefEquipeSericeServiceId(Long serviceId);
-	
+	Equipe updateEquipeActive(Equipe equipe);
 }

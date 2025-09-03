@@ -1,6 +1,7 @@
 package ma.radeef.interventions.models;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -38,7 +39,7 @@ public class Equipe {
     private String createdAt;
     
     @Column
-    private String disabledAt;
+    private LocalDateTime disabledAt;
     
     @Column
     private boolean active;

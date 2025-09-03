@@ -112,11 +112,11 @@ public class GestionHistorique {
         	details += "Service modifié de "+ oldIntervention.getService().getNom() + " à " + newIntervention.getService().getNom() + " . " ;
         }
 
-        if (newIntervention.getEquipe() == null && newIntervention.getTechnicien() != null && !Objects.equals(oldIntervention.getTechnicien(), newIntervention.getTechnicien()) )
+        if (oldIntervention.getEquipe() != null && newIntervention.getEquipe() == null && oldIntervention.getTechnicien() == null && newIntervention.getTechnicien() != null )
         {
             	details += "Changement de Equipe à Technicien" ;
         }
-        if (newIntervention.getEquipe() != null && newIntervention.getTechnicien() == null && !Objects.equals(oldIntervention.getEquipe(), newIntervention.getEquipe()))
+        if (oldIntervention.getTechnicien() != null && newIntervention.getTechnicien() == null && oldIntervention.getEquipe() == null && newIntervention.getEquipe() != null )
         {
             	details += "Changement de Technicien à Equipe" ;
         }

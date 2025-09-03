@@ -12,10 +12,10 @@ import ma.radeef.interventions.endpoints.dtos.mappers.InterventionHistoriqueMapp
 import ma.radeef.interventions.models.Equipe;
 import ma.radeef.interventions.models.Intervention;
 import ma.radeef.interventions.models.InterventionHistorique;
-import ma.radeef.interventions.models.Technicien;
 import ma.radeef.interventions.repositories.EquipeRepository;
 import ma.radeef.interventions.repositories.InterventionHistoriqueRepository;
 import ma.radeef.interventions.repositories.InterventionRepository;
+import ma.radeef.interventions.services.EquipeService;
 import ma.radeef.interventions.services.InterventionService;
 import ma.radeef.interventions.services.ReclamationService;
 import ma.radeef.interventions.services.UserHistoriqueService;
@@ -31,6 +31,8 @@ public class InterventionServiceImpl implements InterventionService {
 	private final EquipeRepository equipeRepository;
 	private final UserHistoriqueService userHistoriqueService;
 	private final ReclamationService reclamationService;
+	private final EquipeService equipeService;
+
 	
 	@Override
     public void add(Intervention intervention, Long userId) {
@@ -91,11 +93,28 @@ public class InterventionServiceImpl implements InterventionService {
 		Intervention oldIntervention = interventionRepository.findById(newIntervention.getId()).orElse(null);
         GestionHistorique.updateIntervention(userHistoriqueService, oldIntervention, newIntervention, userId);
         
-        if(newIntervention.getStatus() == "Terminee") {
-		    reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Terminee");
+        if("Terminee".equals(newIntervention.getStatus())) {
+            reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Terminee");
+            if(newIntervention.getEquipe()!=null)
+            {
+    			Equipe equipe = newIntervention.getEquipe();;
+    			equipe.setIntervention(newIntervention);
+            	equipeService.updateEquipeActive(equipe);
+            }
+
+            
+        }else if("Annulee".equals(newIntervention.getStatus())) {
+            reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Annulee");
+            if(newIntervention.getEquipe()!=null)
+            {
+    			Equipe equipe = newIntervention.getEquipe();;
+    			equipe.setIntervention(newIntervention);
+            	equipeService.updateEquipeActive(equipe);
+            }
         }
         
-		if(newIntervention.getTechnicien() == null && newIntervention.getEquipe() != null) {
+		if((newIntervention.getTechnicien() == null && newIntervention.getEquipe() != null) &&
+				(oldIntervention.getTechnicien() != null && oldIntervention.getEquipe() == null )) {
 			
 			newIntervention.getEquipe().setActive(true);
 			Equipe equipe = equipeRepository.save(newIntervention.getEquipe());

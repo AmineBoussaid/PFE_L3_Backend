@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ServiceDto {
-	   private long id;
+	   private Long id;
 	   private String nom;
 	   private DepartementDto departement;
 	   private UserDto chefService;
