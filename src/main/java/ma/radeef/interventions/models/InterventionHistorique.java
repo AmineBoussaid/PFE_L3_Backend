@@ -42,7 +42,7 @@ public class InterventionHistorique{
 	
 	
 	@Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private String created_at;
+    private String createdAt;
 	
 	@Column
 	private String description;
@@ -73,6 +73,6 @@ public class InterventionHistorique{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "change_par")
-    private User user;
+    private User changePar;
 
 }

@@ -125,11 +125,14 @@ public class InterventionServiceImpl implements InterventionService {
 			equipe.setIntervention(intervention1);
 			equipeRepository.save(equipe);
 			
-			
+		    InterventionHistorique interventionHistorique = interventionHistoriqueMapper.toHistorique(intervention1);
+		    interventionHistoriqueRepository.save(interventionHistorique);
 			return intervention1;
 			
 		}else {
-						
+			
+		    InterventionHistorique interventionHistorique = interventionHistoriqueMapper.toHistorique(newIntervention);
+		    interventionHistoriqueRepository.save(interventionHistorique);
 			return interventionRepository.save(newIntervention);
 		}
 
