@@ -26,5 +26,6 @@ public class InterventionDto {
     private ServiceDto service;
 	private TechnicienDto technicien;
 	private EquipeDto equipe;
+	private RapportDto rapport;
 
 }
