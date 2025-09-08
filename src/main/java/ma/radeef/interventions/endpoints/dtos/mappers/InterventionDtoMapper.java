@@ -8,7 +8,8 @@ import ma.radeef.interventions.models.Intervention;
 
 @Mapper(componentModel = ComponentModel.SPRING, 
 		uses = {EquipeDtoMapper.class, TechnicienDtoMapper.class, 
-		ReclamationDtoMapper.class,DepartementDtoMapper.class,ServiceDtoMapper.class, UserDtoMapper.class })
+		ReclamationDtoMapper.class,DepartementDtoMapper.class,
+		ServiceDtoMapper.class, UserDtoMapper.class, RapportDtoMapper.class})
 
 public interface InterventionDtoMapper {
 	

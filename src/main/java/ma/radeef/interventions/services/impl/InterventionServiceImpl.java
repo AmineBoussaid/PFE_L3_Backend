@@ -12,9 +12,11 @@ import ma.radeef.interventions.endpoints.dtos.mappers.InterventionHistoriqueMapp
 import ma.radeef.interventions.models.Equipe;
 import ma.radeef.interventions.models.Intervention;
 import ma.radeef.interventions.models.InterventionHistorique;
+import ma.radeef.interventions.models.Rapport;
 import ma.radeef.interventions.repositories.EquipeRepository;
 import ma.radeef.interventions.repositories.InterventionHistoriqueRepository;
 import ma.radeef.interventions.repositories.InterventionRepository;
+import ma.radeef.interventions.repositories.RapportRepository;
 import ma.radeef.interventions.services.EquipeService;
 import ma.radeef.interventions.services.InterventionService;
 import ma.radeef.interventions.services.ReclamationService;
@@ -29,9 +31,11 @@ public class InterventionServiceImpl implements InterventionService {
 	private final InterventionHistoriqueMapper interventionHistoriqueMapper;
 	private final InterventionHistoriqueRepository interventionHistoriqueRepository;
 	private final EquipeRepository equipeRepository;
+	private final RapportRepository rapportRepository;
 	private final UserHistoriqueService userHistoriqueService;
 	private final ReclamationService reclamationService;
 	private final EquipeService equipeService;
+	
 
 	
 	@Override
@@ -97,11 +101,11 @@ public class InterventionServiceImpl implements InterventionService {
             reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Terminee");
             if(newIntervention.getEquipe()!=null)
             {
-    			Equipe equipe = newIntervention.getEquipe();;
+    			Equipe equipe = newIntervention.getEquipe();
     			equipe.setIntervention(newIntervention);
             	equipeService.updateEquipeActive(equipe);
             }
-
+            newIntervention.setRapport(rapportRepository.save(newIntervention.getRapport())); 
             
         }else if("Annulee".equals(newIntervention.getStatus())) {
             reclamationService.updateReclamationStatus(newIntervention.getReclamation(), "Annulee");

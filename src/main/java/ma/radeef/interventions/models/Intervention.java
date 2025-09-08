@@ -68,6 +68,10 @@ public class Intervention {
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 	
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rapport_id")
+    private Rapport rapport;
+	
 
 
 }
