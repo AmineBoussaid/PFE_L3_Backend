@@ -1,13 +1,21 @@
 package ma.radeef.interventions.endpoints.security;
 
-import io.jsonwebtoken.*;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.RequiredArgsConstructor;
+import ma.radeef.interventions.services.UserService;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
     
 	@Value("${jwt.secret}")
@@ -16,6 +24,8 @@ public class JwtTokenProvider {
 	@Value("${jwt.expiration}")
     private long jwtExpiration;
 
+    private final UserService userService;
+	
     public String generateToken(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
@@ -46,4 +56,5 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
 }

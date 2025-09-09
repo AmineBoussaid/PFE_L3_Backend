@@ -23,8 +23,8 @@ public class RapportEndpoint {
 	private final RapportService rapportService;
 	private final RapportDtoMapper rapportDtoMapper;
 	
-	@PostMapping("/add/{userId}")
-	public void add(@RequestBody Rapport rapport, @PathVariable("userId") Long userId) {
+	@PostMapping("/add")
+	public void add(@RequestBody Rapport rapport) {
 		rapportService.save(rapport);
 	}
 	

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import ma.radeef.interventions.endpoints.dtos.InterventionDto;
 import ma.radeef.interventions.endpoints.dtos.mappers.InterventionDtoMapper;
 import ma.radeef.interventions.endpoints.errors.NotFoundException;
 import ma.radeef.interventions.models.Intervention;
+import ma.radeef.interventions.models.User;
 import ma.radeef.interventions.services.InterventionService;
 
 @RestController
@@ -28,16 +30,15 @@ public class InterventionEndpoint {
 	private final InterventionService interventionService;
 	private final InterventionDtoMapper interventionDtoMapper;
 	
-	@PostMapping("/add/{userId}")
-	public void add(@RequestBody InterventionDto interventionDto, @PathVariable("userId") Long userId) {
+	@PostMapping("/add")
+	public void add(@RequestBody InterventionDto interventionDto, @AuthenticationPrincipal User user) {
 		Intervention intervention = interventionDtoMapper.toBean(interventionDto);
-		interventionService.add(intervention,userId);
+		interventionService.add(intervention,user.getId());
 	}
 	
-	@DeleteMapping("deleteById/{id}/{userId}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id, @PathVariable("userId") Long userId) {
-
-        boolean isDeleted = interventionService.deleteById(id,userId);
+	@DeleteMapping("deleteById/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        boolean isDeleted = interventionService.deleteById(id,user.getId());
         if (isDeleted) {
             return ResponseEntity.noContent().build();
         } else {
@@ -45,10 +46,10 @@ public class InterventionEndpoint {
         }
     }
 	
-    @PutMapping("/update/{userId}")
-    public InterventionDto updateIntervention(@RequestBody InterventionDto interventionDto, @PathVariable("userId") Long userId) {
+    @PutMapping("/update")
+    public InterventionDto updateIntervention(@RequestBody InterventionDto interventionDto, @AuthenticationPrincipal User user) {
     	Intervention newIntervention = interventionDtoMapper.toBean(interventionDto);
-        return interventionDtoMapper.toDto(interventionService.updateIntervention(newIntervention, userId)); 
+        return interventionDtoMapper.toDto(interventionService.updateIntervention(newIntervention, user.getId())); 
     }
 	
 	@GetMapping("/getAll")

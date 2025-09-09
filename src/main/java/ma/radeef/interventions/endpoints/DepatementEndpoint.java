@@ -34,7 +34,6 @@ public class DepatementEndpoint {
 	@GetMapping("/getAll")
 	public List<DepartementDto> getAll(){
 		return departementService.getAll().stream().map(d -> departementDtoMapper.toDto(d)).toList();
-		
 	}
 	
     @GetMapping("/getByChefDepartement/{chefDepartementId}")
