@@ -115,6 +115,7 @@ public class InterventionServiceImpl implements InterventionService {
     			equipe.setIntervention(newIntervention);
             	equipeService.updateEquipeActive(equipe);
             }
+            newIntervention.setRapport(rapportRepository.save(newIntervention.getRapport())); 
         }
         
 		if((newIntervention.getTechnicien() == null && newIntervention.getEquipe() != null) &&

@@ -6,7 +6,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 import ma.radeef.interventions.endpoints.dtos.RapportDto;
 import ma.radeef.interventions.models.Rapport;
 
-@Mapper(componentModel = ComponentModel.SPRING, uses =  TechnicienDtoMapper.class)
+@Mapper(componentModel = ComponentModel.SPRING, uses =  {UserDtoMapper.class})
 public interface RapportDtoMapper {
 	
 	RapportDto toDto(Rapport rapport);

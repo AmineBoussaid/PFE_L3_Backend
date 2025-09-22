@@ -19,7 +19,6 @@ import ma.radeef.interventions.services.DepartementService;
 
 @RestController
 @RequestMapping("/api/departements")
-@Secured({Roles.AGENT, Roles.TECHNICIEN})
 @RequiredArgsConstructor
 public class DepatementEndpoint {
 	

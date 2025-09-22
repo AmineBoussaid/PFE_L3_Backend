@@ -1,9 +1,11 @@
 package ma.radeef.interventions.endpoints.dtos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.radeef.interventions.models.User;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,9 +14,9 @@ import lombok.NoArgsConstructor;
 public class RapportDto {
 	
 	private Long id;
-	private TechnicienDto technicien;
+	private UserDto createur;
     private String createdAt;
     private Long interventionId;
 	private String description;
-	
+
 }

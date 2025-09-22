@@ -16,11 +16,7 @@ public interface UserService extends UserDetailsService {
 	List<User> getAll();
 	
 	User getById(Long id);
-	
-	User Login(String email,String password);
-	
-	void Logout();
-
+		
 	List<Technicien> getTechniciensByServiceId(Long serviceId);
 
 	User getByEmail(String email);

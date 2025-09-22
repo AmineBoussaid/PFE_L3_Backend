@@ -25,7 +25,7 @@ public class ReclamationServiceImpl implements ReclamationService {
 	private final ClientRepository clientRepository;
 
 	@Override
-	public void save(Reclamation reclamation, Long userId) {
+	public String save(Reclamation reclamation, Long userId) {
 
 		if (reclamation.getCodeAbonnement() != null) {
 			Client client = clientRepository.findByCodeAbonnement(reclamation.getCodeAbonnement());
@@ -42,7 +42,11 @@ public class ReclamationServiceImpl implements ReclamationService {
 		}
 
 		GestionHistorique.createReclamation(userHistoriqueService, reclamation, userId);
-		reclamationRepository.save(reclamation);
+        // Enregistrez la réclamation dans la base de données
+        Reclamation savedReclamation = reclamationRepository.save(reclamation);
+        
+        // Retournez l'ID fonctionnel après l'enregistrement
+        return savedReclamation.getIdFonctionnel();
 	}
 
 	@Override

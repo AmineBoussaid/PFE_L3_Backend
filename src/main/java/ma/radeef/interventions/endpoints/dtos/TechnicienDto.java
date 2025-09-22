@@ -17,5 +17,6 @@ public class TechnicienDto {
     private String email;
     private String description;
     private ServiceDto service;
-    
+    private String imageBase64; // Image encodée en Base64
+
 }

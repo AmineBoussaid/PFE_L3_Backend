@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,13 @@ import ma.radeef.interventions.endpoints.dtos.InterventionDto;
 import ma.radeef.interventions.endpoints.dtos.mappers.InterventionDtoMapper;
 import ma.radeef.interventions.endpoints.errors.NotFoundException;
 import ma.radeef.interventions.models.Intervention;
+import ma.radeef.interventions.models.Roles;
 import ma.radeef.interventions.models.User;
 import ma.radeef.interventions.services.InterventionService;
 
 @RestController
 @RequestMapping("/api/interventions")
+@Secured({Roles.CHEF_DEPARTEMENT,Roles.CHEF_SERVICE,Roles.TECHNICIEN})
 @RequiredArgsConstructor
 public class InterventionEndpoint {
 	
@@ -31,12 +34,14 @@ public class InterventionEndpoint {
 	private final InterventionDtoMapper interventionDtoMapper;
 	
 	@PostMapping("/add")
+	@Secured({Roles.CHEF_DEPARTEMENT,Roles.CHEF_SERVICE})
 	public void add(@RequestBody InterventionDto interventionDto, @AuthenticationPrincipal User user) {
 		Intervention intervention = interventionDtoMapper.toBean(interventionDto);
 		interventionService.add(intervention,user.getId());
 	}
 	
 	@DeleteMapping("deleteById/{id}")
+	@Secured({Roles.CHEF_DEPARTEMENT,Roles.CHEF_SERVICE})
     public ResponseEntity<Void> deleteById(@PathVariable Long id, @AuthenticationPrincipal User user) {
         boolean isDeleted = interventionService.deleteById(id,user.getId());
         if (isDeleted) {
@@ -53,6 +58,7 @@ public class InterventionEndpoint {
     }
 	
 	@GetMapping("/getAll")
+	@Secured({Roles.CHEF_DEPARTEMENT,Roles.CHEF_SERVICE})
 	public List<InterventionDto> getAll(){
 		return interventionService.getAll().stream().map(i -> interventionDtoMapper.toDto(i)).toList();
 	}

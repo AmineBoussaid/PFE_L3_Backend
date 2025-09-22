@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,8 @@ public class User implements UserDetails {
     @Column
     private String description;
     
+    @Column(name = "image")
+    private String image;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

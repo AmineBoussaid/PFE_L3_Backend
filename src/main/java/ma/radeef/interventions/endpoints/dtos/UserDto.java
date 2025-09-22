@@ -21,5 +21,6 @@ public class UserDto {
     private String createdAt;
     private Date lastLogin;
     private String description;
-	
+    private String imageBase64; // Image encodée en Base64
+
 }

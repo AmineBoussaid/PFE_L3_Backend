@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ public class AuthEndpoint {
 
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider tokenProvider;
-    private PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/login")
     public SimpleEntry<String, String> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -39,6 +38,7 @@ public class AuthEndpoint {
         String token = tokenProvider.generateToken(authentication.getName());
         return new SimpleEntry<>("access_token", token);
     }
+    
 }
 
 @Data

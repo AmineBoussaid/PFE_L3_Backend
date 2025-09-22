@@ -1,5 +1,6 @@
 package ma.radeef.interventions.endpoints;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,9 @@ import ma.radeef.interventions.endpoints.dtos.UserDto;
 import ma.radeef.interventions.endpoints.dtos.mappers.UserDtoMapper;
 import ma.radeef.interventions.models.Technicien;
 import ma.radeef.interventions.models.User;
+import ma.radeef.interventions.services.UserHistoriqueService;
 import ma.radeef.interventions.services.UserService;
+import ma.radeef.interventions.services.utils.GestionHistorique;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,6 +27,7 @@ public class UserEndpoint {
 	
 	private final UserService userService;
 	private final UserDtoMapper userDtoMapper;
+	private final UserHistoriqueService userHistoriqueService;
 
 	
 	@PostMapping("/add")
@@ -48,9 +52,11 @@ public class UserEndpoint {
     }
 	
 	@GetMapping("/getByUsername/{username}")
-	public ResponseEntity<UserDto> login(@PathVariable String username) {
+	public ResponseEntity<UserDto> getByUsername(@PathVariable String username) {
 	    User user = userService.getByUsername(username);
 	    if (user != null) {
+	        user.setLastLogin(new Date());
+	        GestionHistorique.loginUser(userHistoriqueService, user);
 	    	UserDto userDto = userDtoMapper.toDto(user);
 	        return ResponseEntity.ok(userDto);
 	    }

@@ -3,6 +3,7 @@ package ma.radeef.interventions.endpoints;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,21 +19,31 @@ import ma.radeef.interventions.endpoints.dtos.ReclamationDto;
 import ma.radeef.interventions.endpoints.dtos.mappers.ReclamationDtoMapper;
 import ma.radeef.interventions.endpoints.errors.NotFoundException;
 import ma.radeef.interventions.models.Reclamation;
+import ma.radeef.interventions.models.Roles;
 import ma.radeef.interventions.models.User;
 import ma.radeef.interventions.services.ReclamationService;
 
 @RestController
 @RequestMapping("/api/reclamations")
+@Secured({Roles.AGENT,Roles.CHEF_DEPARTEMENT,Roles.CHEF_SERVICE})
 @RequiredArgsConstructor
 public class ReclamationEndpoint {
 
 	private final ReclamationService reclamationService;
 	private final ReclamationDtoMapper reclamationDtoMapper;
+	
 
 	@PostMapping("/add")
-	public void add(@RequestBody ReclamationDto reclamationDto, @AuthenticationPrincipal User user) {
-		Reclamation reclamation = reclamationDtoMapper.toBean(reclamationDto);
-		reclamationService.save(reclamation, user.getId());
+	@Secured(Roles.AGENT)
+	public ResponseEntity<String> add(@RequestBody ReclamationDto reclamationDto, @AuthenticationPrincipal User user) {
+	    // Convertissez le DTO en entité Reclamation
+	    Reclamation reclamation = reclamationDtoMapper.toBean(reclamationDto);
+
+	    // Enregistrez la réclamation et récupérez l'ID fonctionnel
+	    String idFonctionnel = reclamationService.save(reclamation, user.getId());
+
+	    // Retournez l'ID fonctionnel comme réponse
+	    return ResponseEntity.ok(idFonctionnel);
 	}
 
 	@PutMapping("/update")

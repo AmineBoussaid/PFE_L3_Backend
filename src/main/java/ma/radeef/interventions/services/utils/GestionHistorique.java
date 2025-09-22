@@ -146,7 +146,6 @@ public class GestionHistorique {
 		String action = "Logout";
 	    String details = "Logout d'Utilisateur: " + user.getUsername() ;
 	    
-	    
 	    userHistoriqueService.save(user, action, details);
 	}
 

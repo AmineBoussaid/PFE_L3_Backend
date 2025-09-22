@@ -32,4 +32,5 @@ public class Technicien extends User {
 	)
     private List<Equipe> equipe;
 
+	
 }

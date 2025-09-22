@@ -9,7 +9,7 @@ import ma.radeef.interventions.models.Reclamation;
 @Service
 public interface ReclamationService {
 	
-	void save(Reclamation reclamation,Long userId);
+    String save(Reclamation reclamation, Long userId);
 	
 	Reclamation updateReclamation(Reclamation reclamation, Long userId);
 	
